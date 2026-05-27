@@ -1,0 +1,12 @@
+<!-- TODO: replace this placeholder with the real Comarden logo SVG. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 64" role="img" aria-label="COMARDEN">
+  <style>
+    .word { font-family: Inter, system-ui, sans-serif; font-weight: 800; font-size: 38px; letter-spacing: -0.02em; }
+    .yellow { fill: #FFD500; }
+    .navy { fill: #002D59; }
+  </style>
+  <text x="0" y="46" class="word navy">C</text>
+  <text x="26" y="46" class="word yellow">O</text>
+  <text x="58" y="46" class="word navy">MARDEN</text>
+  <path d="M194 24 L210 8 L226 24" fill="none" stroke="#FFD500" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
