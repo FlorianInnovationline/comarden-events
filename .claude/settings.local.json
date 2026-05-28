@@ -2,7 +2,11 @@
   "permissions": {
     "allow": [
       "Bash(npm install *)",
-      "Bash(npm run *)"
+      "Bash(npm run *)",
+      "Bash(wait)",
+      "Bash(npx tsc *)",
+      "Bash(node_modules/.bin/next build *)",
+      "Bash(echo \"EXIT:$?\")"
     ]
   }
 }
