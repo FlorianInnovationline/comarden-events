@@ -62,8 +62,6 @@ const eventsData: ComardenEvent[] = [
     partners: [
       {
         name: "ELEVATE",
-        // TODO: drop the real ELEVATE logo at /public/images/partners/elevate.svg
-        logo: "/images/partners/elevate.svg",
         recap:
           "Un grand merci à Koen et Glenn d'ELEVATE pour leurs explications. Merci aussi à Gil, notre formateur EPDM, pour ses rappels sur le placement et la gestion de la qualité, ainsi qu'à Sébastien pour ses interventions toujours passionnantes, qui font le pont entre la théorie et la pratique. Vous trouverez ci-dessous un lien vers le site d'ELEVATE, où vous aurez accès aux descriptions techniques et à la possibilité d'obtenir des cahiers des charges adaptés à vos besoins et à votre chantier.",
         contactName: "Sébastien Devresse",
@@ -73,8 +71,6 @@ const eventsData: ComardenEvent[] = [
       },
       {
         name: "FLORATOIT",
-        // TODO: drop the real FLORATOIT logo at /public/images/partners/floratoit.svg
-        logo: "/images/partners/floratoit.svg",
         recap:
           "Merci à Simon de Floratoit pour ses explications sur la solution de toiture végétale mise en œuvre sur le site de la Confluence, mais aussi sur les autres solutions disponibles sur le marché.",
         contactName: "Simon Fernandez",
@@ -113,7 +109,6 @@ const eventsData: ComardenEvent[] = [
     partners: [
       {
         name: "ELEVATE",
-        logo: "/images/partners/elevate.svg",
         recap:
           "Un grand merci à Koen et Glenn d'ELEVATE pour leurs explications. Merci aussi à Gil, notre formateur EPDM, pour ses rappels sur le placement et la gestion de la qualité, ainsi qu'à Sébastien pour ses interventions toujours passionnantes, qui font le pont entre la théorie et la pratique. Vous trouverez ci-dessous un lien vers le site d'ELEVATE, où vous aurez accès aux descriptions techniques et à la possibilité d'obtenir des cahiers des charges adaptés à vos besoins et à votre chantier.",
         contactName: "Sébastien Devresse",
@@ -122,7 +117,6 @@ const eventsData: ComardenEvent[] = [
       },
       {
         name: "FLORATOIT",
-        logo: "/images/partners/floratoit.svg",
         recap:
           "Merci à Simon de Floratoit pour ses explications sur la solution de toiture végétale mise en œuvre sur le site de la Confluence, mais aussi sur les autres solutions disponibles sur le marché.",
         contactName: "Simon Fernandez",
@@ -159,7 +153,6 @@ const eventsData: ComardenEvent[] = [
     partners: [
       {
         name: "ELEVATE",
-        logo: "/images/partners/elevate.svg",
         recap:
           "ELEVATE interviendra pour présenter ses nouveaux systèmes EPDM et les outils d'aide à la prescription destinés aux architectes.",
         contactName: "Sébastien Devresse",

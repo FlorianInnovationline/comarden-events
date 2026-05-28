@@ -6,6 +6,7 @@ import { ArrowRight, MapPin, Users } from "lucide-react";
 import type { ComardenEvent } from "@/types/events";
 import { DateBadge } from "@/components/ui/Badge";
 import { splitDate } from "@/lib/format";
+import { PartnerChipLogo } from "@/components/events/PartnerChipLogo";
 
 interface EventCardProps {
   event: ComardenEvent;
@@ -69,8 +70,9 @@ export function EventCard({ event, featured }: EventCardProps) {
               {event.partners.map((p) => (
                 <li
                   key={p.name}
-                  className="rounded-full border border-primary/10 bg-neutral px-2.5 py-1 text-[0.7rem] font-bold uppercase tracking-kicker text-primary"
+                  className="inline-flex items-center gap-1.5 rounded-full border border-primary/10 bg-neutral px-2.5 py-1 text-[0.7rem] font-bold uppercase tracking-kicker text-primary"
                 >
+                  <PartnerChipLogo name={p.name} />
                   {p.name}
                 </li>
               ))}

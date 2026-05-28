@@ -5,6 +5,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, Camera, MapPin, Users } from "lucide-react";
 import type { ComardenEvent } from "@/types/events";
 import { splitDate } from "@/lib/format";
+import { PartnerChipLogo } from "@/components/events/PartnerChipLogo";
 
 interface EventTimelineProps {
   events: ComardenEvent[];
@@ -138,8 +139,9 @@ export function EventTimeline({ events, onPhotosClick }: EventTimelineProps) {
                     {event.partners.map((p) => (
                       <li
                         key={p.name}
-                        className="rounded-full border border-primary/10 bg-neutral px-2.5 py-1 text-[0.7rem] font-bold uppercase tracking-kicker text-primary"
+                        className="inline-flex items-center gap-1.5 rounded-full border border-primary/10 bg-neutral px-2.5 py-1 text-[0.7rem] font-bold uppercase tracking-kicker text-primary"
                       >
+                        <PartnerChipLogo name={p.name} />
                         {p.name}
                       </li>
                     ))}
