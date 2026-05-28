@@ -143,7 +143,7 @@ export default async function EventDetailPage({
             <SectionTitle
               kicker="Souvenirs"
               title="Revivez la journée"
-              description="Photos et vidéos de l'événement — cliquez pour agrandir."
+              description="Photos et vidéos de l'événement. Cliquez pour agrandir."
             />
             <div className="mt-8 sm:mt-10">
               <EventGallery media={event.media} />

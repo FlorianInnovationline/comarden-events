@@ -55,8 +55,7 @@ export function SouvenirsClient({ media, filters }: SouvenirsClientProps) {
             transition={{ duration: 0.6, delay: 0.15 }}
             className="mt-4 max-w-2xl text-sm text-white/80 sm:mt-5 sm:text-base lg:text-lg"
           >
-            Photos, démos et moments conviviaux — l&apos;ambiance des rencontres Comarden,
-            filtrée par événement.
+            Photos, démos et moments conviviaux : retrouvez l&apos;ambiance des rencontres Comarden, filtrée par événement.
           </motion.p>
         </div>
       </section>

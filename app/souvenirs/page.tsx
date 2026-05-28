@@ -5,7 +5,7 @@ import { SouvenirsClient } from "@/components/sections/SouvenirsClient";
 export const metadata: Metadata = {
   title: "Souvenirs",
   description:
-    "Revivez nos événements en images et en vidéos — photos, démos et moments conviviaux."
+    "Revivez nos événements en images et en vidéos : photos, démos et moments conviviaux."
 };
 
 export default async function SouvenirsPage() {

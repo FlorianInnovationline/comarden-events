@@ -3,7 +3,7 @@ export const site = {
   shortName: "COMARDEN",
   tagline: "Comarden vous couvre depuis 1977.",
   description:
-    "Des rencontres pensées pour vous. Bienvenue sur la page événements de Comarden — partages, conseils d'experts et moments conviviaux.",
+    "Des rencontres pensées pour vous. Bienvenue sur la page événements de Comarden : partages, conseils d'experts et moments conviviaux.",
   url: "https://comarden-events.be",
   mainSiteUrl: "https://comarden.vercel.app",
   contact: {

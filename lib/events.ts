@@ -186,7 +186,7 @@ const eventsData: ComardenEvent[] = [
     horaires: "9h00 – 16h30",
     status: "upcoming",
     teaser:
-      "Techniques de pose de bardages, systèmes de façades ventilées et finitions de parement — une journée pratique pensée pour les couvreurs.",
+      "Techniques de pose de bardages, systèmes de façades ventilées et finitions de parement : une journée pratique pensée pour les couvreurs.",
     intro:
       "Rejoignez-nous pour une journée entièrement dédiée aux systèmes de façade et de parement. Démonstrations pratiques, astuces de pose et focus sur les nouvelles solutions disponibles chez Comarden.",
     partners: [],
@@ -209,7 +209,7 @@ const eventsData: ComardenEvent[] = [
     horaires: "9h00 – 17h00",
     status: "upcoming",
     teaser:
-      "Sélection des matériaux, règles de pose et spécifications dans les cahiers des charges pour les toitures en pente — ardoises naturelles et tuiles.",
+      "Sélection des matériaux, règles de pose et spécifications dans les cahiers des charges pour les toitures en pente (ardoises naturelles et tuiles).",
     intro:
       "Cette journée est consacrée aux matériaux de couverture en pente : ardoises naturelles, ardoises fibrociment et tuiles. Les intervenants aborderont les règles de pose, les compatibilités avec l'isolation et les sous-toitures, ainsi que la rédaction des cahiers des charges.",
     partners: [],
@@ -255,7 +255,7 @@ const eventsData: ComardenEvent[] = [
     horaires: "9h00 – 17h00",
     status: "upcoming",
     teaser:
-      "Construction en ossature bois, isolation et couverture bois — une journée transversale pour architectes et couvreurs.",
+      "Construction en ossature bois, isolation et couverture bois : une journée transversale pour architectes et couvreurs.",
     intro:
       "La construction bois est en plein essor. Cette journée réunit architectes et couvreurs autour des systèmes constructifs en ossature bois : de la structure à la couverture, en passant par les solutions d'isolation et d'étanchéité à l'air.",
     partners: [],

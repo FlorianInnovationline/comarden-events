@@ -105,7 +105,7 @@ export function EventsShowcase({ events }: EventsShowcaseProps) {
           <SectionTitle
             kicker="Nos rendez-vous"
             title="Les événements Comarden"
-            description="Découvrez nos formats — passés et à venir — et plongez dans les comptes-rendus, partenaires et souvenirs."
+            description="Découvrez nos formats passés et à venir, et plongez dans les comptes-rendus, les partenaires et les souvenirs."
             className="sm:max-w-xl lg:max-w-2xl"
           />
 
@@ -166,7 +166,7 @@ export function EventsShowcase({ events }: EventsShowcaseProps) {
                   De nouveaux événements arrivent bientôt.
                 </p>
                 <p className="mt-2 text-sm text-ink-light">
-                  Restez connectés — on prépare les prochains rendez-vous Comarden.
+                  Restez connectés, on prépare les prochains rendez-vous Comarden.
                 </p>
               </motion.div>
             ) : view === "calendrier" ? (

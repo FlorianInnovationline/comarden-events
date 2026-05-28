@@ -88,7 +88,7 @@ export function Gallery({
 
       {filtered.length === 0 && (
         <p className="rounded-2xl border border-dashed border-primary/15 bg-white p-8 text-center text-sm text-ink-light">
-          Aucun souvenir pour ce filtre — réessayez bientôt.
+          Aucun souvenir pour ce filtre. Réessayez bientôt.
         </p>
       )}
 

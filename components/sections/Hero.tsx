@@ -70,7 +70,7 @@ export function Hero() {
             Bienvenue sur notre page événements, où nous voulons partager avec vous les
             événements que nous organisons. Chaque événement est pensé pour en faire un
             moment d&apos;échange, de rencontre et pour vous apporter des connaissances
-            complémentaires, des conseils et des tips essentiels — tout en passant un
+            complémentaires, des conseils et des tips essentiels, tout en passant un
             moment agréable. Chaque moment est réfléchi pour que vous ne vous déplaciez
             pas pour rien.
           </motion.p>

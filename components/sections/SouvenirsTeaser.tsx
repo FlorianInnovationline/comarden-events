@@ -22,7 +22,7 @@ export function SouvenirsTeaser({ media }: SouvenirsTeaserProps) {
           <SectionTitle
             kicker="Souvenirs"
             title={<>Revivez nos événements en <span className="relative text-primary">images<span aria-hidden className="absolute inset-x-0 -bottom-1 block h-2 origin-left rounded-full bg-accent/70" /></span>.</>}
-            description="Une mosaïque de moments — démos, échanges, sourires — captés lors de nos rencontres."
+            description="Une mosaïque de moments (démos, échanges, sourires) captés lors de nos rencontres."
           />
           <Reveal delay={0.2} className="mt-8">
             <Link
