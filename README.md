@@ -99,6 +99,65 @@ types/
   events.ts         # ComardenEvent / EventPartner / EventMedia
 ```
 
+## Synchroniser les événements avec le site principal
+
+Toutes les données passent par les fonctions asynchrones de `lib/events.ts`
+(`getEvents`, `getEventBySlug`, etc.). Pour basculer vers une source live,
+remplacez uniquement le corps de `getEvents()` — le reste du site s'adapte
+automatiquement.
+
+### Option A — API REST partagée
+
+Le site principal (`comarden.vercel.app`) expose une route `/api/events` qui
+retourne un tableau de `ComardenEvent`. Ici on la consomme :
+
+```ts
+// lib/events.ts — corps de getEvents()
+const res = await fetch(process.env.NEXT_PUBLIC_EVENTS_API_URL!, {
+  next: { revalidate: 300 }, // revalide toutes les 5 minutes (ISR)
+});
+return res.json() as Promise<ComardenEvent[]>;
+```
+
+Variables d'environnement à définir dans Vercel :
+```
+NEXT_PUBLIC_EVENTS_API_URL=https://comarden.vercel.app/api/events
+```
+
+### Option B — Supabase partagée (recommandée)
+
+Les deux sites lisent la même table `events` dans une instance Supabase. Un seul
+point de vérité, pas de duplication, les mises à jour sont instantanées.
+
+```ts
+// lib/events.ts — corps de getEvents()
+import { createClient } from "@supabase/supabase-js";
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
+const { data } = await supabase
+  .from("events")
+  .select("*")
+  .order("date", { ascending: false });
+return (data ?? []) as ComardenEvent[];
+```
+
+Variables d'environnement à définir dans Vercel :
+```
+NEXT_PUBLIC_SUPABASE_URL=https://<project>.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=<anon-key>
+```
+
+Installez le client : `npm install @supabase/supabase-js`
+
+### Option C — Mise à jour manuelle (situation actuelle)
+
+Éditez directement `lib/events.ts`, commitez et Vercel redéploie. Convient tant
+que les événements changent peu souvent. Aucune infrastructure supplémentaire.
+
+---
+
 ## Accessibility & motion
 
 - All non-essential motion is gated behind `prefers-reduced-motion: reduce`.

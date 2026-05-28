@@ -2,7 +2,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, Clock, MapPin, Users } from "lucide-react";
-import { events, getAdjacentEvents, getEventBySlug } from "@/lib/events";
+import {
+  getEvents,
+  getEventBySlug,
+  getAdjacentEvents,
+} from "@/lib/events";
 import { Reveal } from "@/components/ui/Reveal";
 import { PartnerBlock } from "@/components/events/PartnerBlock";
 import { EventGallery } from "@/components/events/EventGallery";
@@ -11,28 +15,38 @@ import { Badge, DateBadge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { splitDate } from "@/lib/format";
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  const events = await getEvents();
   return events.map((e) => ({ slug: e.slug }));
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
-  const event = getEventBySlug(params.slug);
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}): Promise<Metadata> {
+  const event = await getEventBySlug(params.slug);
   if (!event) return { title: "Événement introuvable" };
   return {
     title: `${event.title}${event.audience ? " — " + event.audience : ""} — ${event.dateLabel}`,
-    description: event.teaser
+    description: event.teaser,
   };
 }
 
-export default function EventDetailPage({ params }: { params: { slug: string } }) {
-  const event = getEventBySlug(params.slug);
+export default async function EventDetailPage({
+  params,
+}: {
+  params: { slug: string };
+}) {
+  const event = await getEventBySlug(params.slug);
   if (!event) notFound();
 
   const { day, month, year } = splitDate(event.date);
-  const { prev, next } = getAdjacentEvents(event.slug);
+  const { prev, next } = await getAdjacentEvents(event.slug);
 
   return (
     <>
+      {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden bg-primary pb-14 pt-24 text-white sm:pb-20 sm:pt-32 lg:pt-40">
         <div
           aria-hidden
@@ -65,7 +79,12 @@ export default function EventDetailPage({ params }: { params: { slug: string } }
           </div>
 
           <div className="mt-6 grid gap-6 lg:grid-cols-[auto,1fr] lg:items-end lg:gap-8">
-            <DateBadge day={day} month={month} year={year} className="h-20 w-20 sm:h-24 sm:w-24" />
+            <DateBadge
+              day={day}
+              month={month}
+              year={year}
+              className="h-20 w-20 sm:h-24 sm:w-24"
+            />
             <div>
               <h1 className="heading-xl text-balance">{event.title}</h1>
               <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-xs text-white/85 sm:mt-5 sm:gap-x-6 sm:gap-y-3 sm:text-sm">
@@ -91,10 +110,13 @@ export default function EventDetailPage({ params }: { params: { slug: string } }
         </div>
       </section>
 
+      {/* ── Body ─────────────────────────────────────────────────────────── */}
       <section className="relative bg-neutral py-14 sm:py-20">
-        <div className="container-narrow space-y-10 sm:space-y-12">
+        <div className="container-narrow space-y-10 sm:space-y-14">
           <Reveal>
-            <p className="text-base leading-relaxed text-ink sm:text-lg lg:text-xl">{event.intro}</p>
+            <p className="text-base leading-relaxed text-ink sm:text-lg lg:text-xl">
+              {event.intro}
+            </p>
           </Reveal>
 
           {event.partners.length > 0 && (
@@ -104,7 +126,7 @@ export default function EventDetailPage({ params }: { params: { slug: string } }
                 title="Merci à nos partenaires"
                 description="Un compte-rendu rapide des interventions, et comment les recontacter."
               />
-              <div className="space-y-6">
+              <div className="grid gap-5 md:grid-cols-2">
                 {event.partners.map((p) => (
                   <PartnerBlock key={p.name} partner={p} />
                 ))}
@@ -114,6 +136,7 @@ export default function EventDetailPage({ params }: { params: { slug: string } }
         </div>
       </section>
 
+      {/* ── Gallery ──────────────────────────────────────────────────────── */}
       {event.media.length > 0 && (
         <section className="bg-white py-14 sm:py-20">
           <div className="container">
@@ -129,6 +152,7 @@ export default function EventDetailPage({ params }: { params: { slug: string } }
         </section>
       )}
 
+      {/* ── Prev / Next navigation ────────────────────────────────────────── */}
       <section className="bg-neutral py-12 sm:py-16">
         <div className="container grid gap-4 sm:grid-cols-2 sm:gap-6">
           {prev ? (
@@ -137,7 +161,9 @@ export default function EventDetailPage({ params }: { params: { slug: string } }
               className="group flex flex-col rounded-2xl bg-white p-5 shadow-soft ring-1 ring-primary/5 transition hover:shadow-glow sm:p-6"
             >
               <span className="kicker text-primary/60">← Précédent</span>
-              <span className="mt-2 text-base font-bold text-primary sm:text-lg">{prev.title}</span>
+              <span className="mt-2 text-base font-bold text-primary sm:text-lg">
+                {prev.title}
+              </span>
               <span className="mt-1 text-sm text-ink-light">{prev.dateLabel}</span>
             </Link>
           ) : (
@@ -149,7 +175,9 @@ export default function EventDetailPage({ params }: { params: { slug: string } }
               className="group flex flex-col rounded-2xl bg-white p-5 shadow-soft ring-1 ring-primary/5 transition hover:shadow-glow sm:items-end sm:p-6 sm:text-right"
             >
               <span className="kicker text-primary/60">Suivant →</span>
-              <span className="mt-2 text-base font-bold text-primary sm:text-lg">{next.title}</span>
+              <span className="mt-2 text-base font-bold text-primary sm:text-lg">
+                {next.title}
+              </span>
               <span className="mt-1 text-sm text-ink-light">{next.dateLabel}</span>
             </Link>
           ) : (
