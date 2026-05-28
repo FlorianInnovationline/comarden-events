@@ -5,7 +5,7 @@ export const site = {
   description:
     "Des rencontres pensées pour vous. Bienvenue sur la page événements de Comarden : partages, conseils d'experts et moments conviviaux.",
   url: "https://comarden-events.be",
-  mainSiteUrl: "https://comarden.vercel.app",
+  mainSiteUrl: "https://www.comarden.be",
   contact: {
     phone: "061 41 27 06",
     phoneHref: "tel:+3261412706",
