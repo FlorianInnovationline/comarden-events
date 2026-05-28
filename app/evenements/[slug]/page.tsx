@@ -114,6 +114,17 @@ export default async function EventDetailPage({
       <section className="relative bg-neutral py-14 sm:py-20">
         <div className="container-narrow space-y-10 sm:space-y-14">
           <Reveal>
+            {/* "Merci aux participants" is a fixed label shown for all past events —
+                it is NOT stored per-event in the DB; event.intro is the dynamic content. */}
+            {event.status === "past" && (
+              <div className="mb-6 flex flex-col gap-3 sm:mb-8">
+                <span className="kicker">Compte-rendu</span>
+                <h2 className="heading-lg text-balance text-primary">
+                  Merci aux participants
+                </h2>
+                <span aria-hidden className="block h-1 w-16 rounded-full bg-accent" />
+              </div>
+            )}
             <p className="text-base leading-relaxed text-ink sm:text-lg lg:text-xl">
               {event.intro}
             </p>
