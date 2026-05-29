@@ -156,7 +156,7 @@ const eventsData: ComardenEvent[] = [
     teaser:
       "Approfondissez vos connaissances sur les systèmes EPDM pour toiture plate : dimensionnement, détails de rives et retours, cahiers des charges.",
     intro:
-      "Cette formation avancée est destinée aux architectes souhaitant maîtriser en détail les systèmes de toiture plate en EPDM. Au programme : dimensionnement, gestion des évacuations, détails de rives et prescriptions dans les cahiers des charges.",
+      "Nous organisons des formations à la demande spécialement conçues pour les architectes. Au préalable, nous vous envoyons un document permettant de recueillir vos attentes précises. Nous préparons ainsi la formation à partir d'un socle de base, que nous adaptons et complétons pour répondre exactement à vos besoins.",
     partners: [
       {
         name: "ELEVATE",
@@ -167,6 +167,8 @@ const eventsData: ComardenEvent[] = [
         website: "https://www.elevate-roofing.com"
       }
     ],
+    // media: fallback used when public/images/events/formation-epdm-avance-architectes/ is empty.
+    // When real photos are dropped into that folder, they take precedence automatically.
     media: [
       { type: "image", src: placeholderImage("epdm-adv-1", 1200, 800), alt: "Atelier EPDM avancé" },
       { type: "image", src: placeholderImage("epdm-adv-2", 1200, 800), alt: "Détails de rive EPDM" },
@@ -188,84 +190,17 @@ const eventsData: ComardenEvent[] = [
     teaser:
       "Techniques de pose de bardages, systèmes de façades ventilées et finitions de parement : une journée pratique pensée pour les couvreurs.",
     intro:
-      "Rejoignez-nous pour une journée entièrement dédiée aux systèmes de façade et de parement. Démonstrations pratiques, astuces de pose et focus sur les nouvelles solutions disponibles chez Comarden.",
+      "Vous êtes couvreur et souhaitez monter en compétence sur l’EPDM, la toiture végétale ou les solutions de façade ? Nous organisons des formations à la demande et sur mesure, partout en Belgique, de mai à octobre. Au programme : EPDM Niveau 1 — initiation à la pose de membrane EPDM, EPDM Niveau 2 — perfectionnement et techniques avancées, Stacbond — mise en œuvre de façade, Toiture végétale — solutions de végétalisation, Soudobrasage. N’hésitez pas à nous contacter pour organiser la formation qui vous conviendra le mieux.",
     partners: [],
+    // media: fallback used when public/images/events/journee-facade-parement-couvreurs/ is empty.
+    // When real photos are dropped into that folder, they take precedence automatically.
     media: [
       { type: "image", src: placeholderImage("facade-1", 1200, 800), alt: "Pose de bardage" },
       { type: "image", src: placeholderImage("facade-2", 1200, 800), alt: "Système façade ventilée" },
       { type: "image", src: placeholderImage("facade-3", 1200, 800), alt: "Démonstration pratique" },
       { type: "image", src: placeholderImage("facade-4", 1200, 800), alt: "Finitions de parement" },
       { type: "image", src: placeholderImage("facade-5", 1200, 800), alt: "Matériaux exposés" },
-      { type: "image", src: placeholderImage("facade-6", 1200, 800), alt: "Moment d'échange" }
-    ]
-  },
-  {
-    slug: "toiture-pente-ardoises-tuiles-architectes",
-    title: "Toiture en Pente : Ardoises & Tuiles",
-    date: "2026-09-17",
-    dateLabel: "17 Septembre 2026",
-    audience: "Architectes",
-    location: "Comarden — Naninne",
-    horaires: "9h00 – 17h00",
-    status: "upcoming",
-    teaser:
-      "Sélection des matériaux, règles de pose et spécifications dans les cahiers des charges pour les toitures en pente (ardoises naturelles et tuiles).",
-    intro:
-      "Cette journée est consacrée aux matériaux de couverture en pente : ardoises naturelles, ardoises fibrociment et tuiles. Les intervenants aborderont les règles de pose, les compatibilités avec l'isolation et les sous-toitures, ainsi que la rédaction des cahiers des charges.",
-    partners: [],
-    media: [
-      { type: "image", src: placeholderImage("ardoises-1", 1200, 800), alt: "Ardoises naturelles" },
-      { type: "image", src: placeholderImage("ardoises-2", 1200, 800), alt: "Échantillons de tuiles" },
-      { type: "image", src: placeholderImage("ardoises-3", 1200, 800), alt: "Démonstration de pose" },
-      { type: "image", src: placeholderImage("ardoises-4", 1200, 800), alt: "Détails de noue" },
-      { type: "image", src: placeholderImage("ardoises-5", 1200, 800), alt: "Présentation technique" },
-      { type: "image", src: placeholderImage("ardoises-6", 1200, 800), alt: "Visite du showroom" }
-    ]
-  },
-  {
-    slug: "formation-etancheite-bitumineuse-couvreurs",
-    title: "Formation Étanchéité Bitumineuse",
-    date: "2026-10-08",
-    dateLabel: "8 Octobre 2026",
-    audience: "Couvreurs",
-    location: "Comarden — Bertrix",
-    horaires: "9h00 – 17h00",
-    status: "upcoming",
-    teaser:
-      "Maîtrisez les systèmes d'étanchéité bitumineuse : multicouches, bicouches soudés et solutions d'autoprotection.",
-    intro:
-      "Formation technique sur les membranes bitumineuses pour toiture plate : choix des systèmes, préparation du support, mise en œuvre et contrôle qualité. Une journée complète orientée pratique.",
-    partners: [],
-    media: [
-      { type: "image", src: placeholderImage("bitu-1", 1200, 800), alt: "Membrane bitumineuse" },
-      { type: "image", src: placeholderImage("bitu-2", 1200, 800), alt: "Soudage au chalumeau" },
-      { type: "image", src: placeholderImage("bitu-3", 1200, 800), alt: "Contrôle qualité" },
-      { type: "image", src: placeholderImage("bitu-4", 1200, 800), alt: "Détail d'évacuation" },
-      { type: "image", src: placeholderImage("bitu-5", 1200, 800), alt: "Atelier pratique" },
-      { type: "image", src: placeholderImage("bitu-6", 1200, 800), alt: "Matériaux présentés" }
-    ]
-  },
-  {
-    slug: "journee-bois-ossature-bois",
-    title: "Journée Bois & Ossature Bois",
-    date: "2026-11-12",
-    dateLabel: "12 Novembre 2026",
-    audience: "Architectes & Couvreurs",
-    location: "Comarden — Naninne",
-    horaires: "9h00 – 17h00",
-    status: "upcoming",
-    teaser:
-      "Construction en ossature bois, isolation et couverture bois : une journée transversale pour architectes et couvreurs.",
-    intro:
-      "La construction bois est en plein essor. Cette journée réunit architectes et couvreurs autour des systèmes constructifs en ossature bois : de la structure à la couverture, en passant par les solutions d'isolation et d'étanchéité à l'air.",
-    partners: [],
-    media: [
-      { type: "image", src: placeholderImage("bois-1", 1200, 800), alt: "Ossature bois" },
-      { type: "image", src: placeholderImage("bois-2", 1200, 800), alt: "Isolation en ouate de cellulose" },
-      { type: "image", src: placeholderImage("bois-3", 1200, 800), alt: "Détail de toiture bois" },
-      { type: "image", src: placeholderImage("bois-4", 1200, 800), alt: "Atelier montage" },
-      { type: "image", src: placeholderImage("bois-5", 1200, 800), alt: "Présentation matériaux" },
-      { type: "image", src: placeholderImage("bois-6", 1200, 800), alt: "Discussion technique" }
+      { type: "image", src: placeholderImage("facade-6", 1200, 800), alt: "Moment d’échange" }
     ]
   }
 ];
