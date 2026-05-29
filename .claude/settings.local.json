@@ -6,7 +6,8 @@
       "Bash(wait)",
       "Bash(npx tsc *)",
       "Bash(node_modules/.bin/next build *)",
-      "Bash(echo \"EXIT:$?\")"
+      "Bash(echo \"EXIT:$?\")",
+      "Bash(npx next *)"
     ]
   }
 }

@@ -22,6 +22,7 @@ export const site = {
     { href: "/", label: "Accueil" },
     { href: "/#evenements", label: "Événements" },
     { href: "/souvenirs", label: "Souvenirs" },
+    { href: "/jobs", label: "Jobs" },
     { href: "/#contact", label: "Contact" }
   ]
 } as const;
