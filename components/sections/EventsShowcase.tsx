@@ -29,7 +29,7 @@ const COLLAPSED_COUNT = 2;
 export function EventsShowcase({ events }: EventsShowcaseProps) {
   const reduce = useReducedMotion();
   const sectionRef = useRef<HTMLElement>(null);
-  const [filter, setFilter] = useState<Filter>("upcoming");
+  const [filter, setFilter] = useState<Filter>("past");
   const [view, setView] = useState<View>("liste");
   const [expanded, setExpanded] = useState(false);
   const [photosEvent, setPhotosEvent] = useState<ComardenEvent | null>(null);
