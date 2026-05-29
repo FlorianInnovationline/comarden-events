@@ -37,6 +37,7 @@
  */
 
 import type { ComardenEvent } from "@/types/events";
+import { getMediaFromFolder } from "@/lib/event-media";
 
 const placeholderImage = (seed: string, w = 1200, h = 800) =>
   `https://picsum.photos/seed/${seed}/${w}/${h}`;
@@ -79,6 +80,9 @@ const eventsData: ComardenEvent[] = [
         website: "https://www.floratoit.be"
       }
     ],
+    // media: fallback used when public/images/events/epdm-toiture-vegetale-architectes/ is empty.
+    // When real photos are dropped into that folder, they take precedence automatically.
+    // Eventually this will be replaced by Supabase Storage URLs (event-media bucket).
     media: [
       { type: "image", src: placeholderImage("comarden-archi-1"), alt: "Vue d'ensemble de la journée architectes" },
       { type: "image", src: placeholderImage("comarden-archi-2"), alt: "Démonstration EPDM" },
@@ -124,6 +128,9 @@ const eventsData: ComardenEvent[] = [
         website: "https://www.floratoit.be"
       }
     ],
+    // media: fallback used when public/images/events/epdm-toiture-vegetale-couvreurs/ is empty.
+    // When real photos are dropped into that folder, they take precedence automatically.
+    // Eventually this will be replaced by Supabase Storage URLs (event-media bucket).
     media: [
       { type: "image", src: placeholderImage("comarden-couv-1"), alt: "Atelier EPDM couvreurs" },
       { type: "image", src: placeholderImage("comarden-couv-2"), alt: "Mise en œuvre EPDM" },
@@ -287,7 +294,18 @@ export async function getEvents(): Promise<ComardenEvent[]> {
   //     .from("events").select("*").order("date", { ascending: false });
   //   return (data ?? []) as ComardenEvent[];
   // ─────────────────────────────────────────────────────────────────────────
-  return eventsData;
+
+  // Merge auto-scanned folder media over the placeholder media array.
+  // Rule: if public/images/events/<slug>/ contains real photos, those win.
+  //       Otherwise the event's `media` array (picsum placeholders) is used.
+  // This means: drop photos in the folder → they appear on next build/dev.
+  // No code changes needed.
+  return eventsData.map((event) => {
+    const folderMedia = getMediaFromFolder(event.slug);
+    return folderMedia.length > 0
+      ? { ...event, media: folderMedia }
+      : event;
+  });
 }
 
 export async function getEventBySlug(slug: string): Promise<ComardenEvent | undefined> {
