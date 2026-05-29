@@ -1,6 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  // Exclude the event photo folders from serverless function bundles.
+  // These are static files served directly from public/ — they must NOT be
+  // traced into the 300 MB Vercel function limit.
+  outputFileTracingExcludes: {
+    "*": ["./public/images/events/**/*"],
+  },
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "picsum.photos" },

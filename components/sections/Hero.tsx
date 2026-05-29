@@ -89,14 +89,6 @@ export function Hero() {
             >
               Voir les événements
             </Button>
-            <Button
-              href="/souvenirs"
-              variant="outline"
-              size="lg"
-              className="w-full justify-center border-white/60 text-white hover:bg-white hover:text-primary sm:w-auto"
-            >
-              Souvenirs
-            </Button>
           </motion.div>
         </div>
 
