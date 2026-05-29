@@ -1,15 +1,30 @@
 export interface JobPosting {
   slug: string;
+  /** Full title used on the detail page, e.g. "Technico-commercial·e interne (F/H/X) — Naninne" */
   title: string;
-  /** Short display name, e.g. "Naninne" */
+  /** Shorter title used on the card, e.g. "Commercial·e interne — Naninne" */
+  shortTitle: string;
+  /** Full location string, e.g. "Naninne (Namur)" */
   location: string;
-  /** Full location string shown in the modal, e.g. "Naninne (Namur)" */
-  locationDetail: string;
-  /** One-line teaser shown on the card */
-  description: string;
-  /** Array of paragraphs shown in the detail modal */
-  fullDescription: string[];
   contractType: string;
+  /** "Sédentaire" | "Itinérant" */
+  workType: string;
+  /** 1–2 lines used on the card */
+  teaser: string;
+  /** Subtitle / one-liner shown beneath the hero title */
+  subtitle: string;
+  /** "À propos de Comarden" intro paragraph */
+  companyIntro: string;
+  /** "En tant que..." paragraph */
+  roleOverview: string;
+  responsibilities: string[];
+  profile: string[];
+  /** e.g. "7h30 – 17h00, avec système de récupération" — optional */
+  horaires?: string;
+  benefits: string[];
+  permisBRequired?: boolean;
+  vehicleProvided?: boolean;
+  isActive: boolean;
 }
 
 export type DriverLicense = "oui" | "non";

@@ -140,16 +140,17 @@ async function submitApplication(data: ApplicationPayload): Promise<void> {
 
 interface JobApplicationFormProps {
   jobs: JobPosting[];
-  defaultPosition?: string;
+  /** Slug of the job to pre-select in the form on mount. */
+  initialJobSlug?: string;
 }
 
 const TOTAL_STEPS = 4;
 
 type SubmitStatus = "idle" | "submitting" | "success" | "error";
 
-function makeInitialValues(defaultPosition = ""): ApplicationFormValues {
+function makeInitialValues(initialJobSlug = ""): ApplicationFormValues {
   return {
-    position: defaultPosition,
+    position: initialJobSlug,
     lastName: "",
     firstName: "",
     email: "",
@@ -185,14 +186,14 @@ const slideVariants = {
 
 export function JobApplicationForm({
   jobs,
-  defaultPosition = "",
+  initialJobSlug = "",
 }: JobApplicationFormProps) {
   const reduce = useReducedMotion();
 
   const [step, setStep] = useState(0);
   const [stepDir, setStepDir] = useState<1 | -1>(1);
   const [values, setValues] = useState<ApplicationFormValues>(
-    makeInitialValues(defaultPosition)
+    makeInitialValues(initialJobSlug)
   );
   const [errors, setErrors] = useState<FormErrors>({});
   const [submitStatus, setSubmitStatus] = useState<SubmitStatus>("idle");

@@ -48,7 +48,7 @@ export function Step1Position({ values, errors, jobs, onChange }: Step1Props) {
             <option value="">Sélectionnez un poste...</option>
             {jobs.map((j) => (
               <option key={j.slug} value={j.slug}>
-                {j.title} — {j.locationDetail}
+                {j.shortTitle} — {j.location}
               </option>
             ))}
           </select>
@@ -67,9 +67,9 @@ export function Step1Position({ values, errors, jobs, onChange }: Step1Props) {
         if (!job) return null;
         return (
           <div className="rounded-xl border border-primary/10 bg-primary/5 px-4 py-4">
-            <p className="text-sm font-bold text-primary">{job.title}</p>
-            <p className="mt-0.5 text-xs text-ink-light">{job.locationDetail} · {job.contractType}</p>
-            <p className="mt-2 text-sm text-ink-light">{job.description}</p>
+            <p className="text-sm font-bold text-primary">{job.shortTitle}</p>
+            <p className="mt-0.5 text-xs text-ink-light">{job.location} · {job.contractType}</p>
+            <p className="mt-2 text-sm text-ink-light">{job.teaser}</p>
           </div>
         );
       })()}

@@ -3,14 +3,26 @@
 import { CountUp } from "@/components/ui/CountUp";
 import { Reveal } from "@/components/ui/Reveal";
 
-const STATS = [
-  { value: 1977, label: "Depuis", suffix: "" },
-  { value: 2, label: "Sites (Bertrix & Naninne)", suffix: "" },
-  { value: 12, label: "Événements organisés", suffix: "+" },
-  { value: 100, label: "Pensés pour vous", suffix: "%" }
-];
+interface StatsBandProps {
+  /** Real count of past events passed down from the server page. */
+  pastEventsCount?: number;
+}
 
-export function StatsBand() {
+export function StatsBand({ pastEventsCount = 0 }: StatsBandProps) {
+  // Show plain number; add "+" suffix only once we reach 10+ (marketing polish).
+  const eventSuffix = pastEventsCount >= 10 ? "+" : "";
+
+  const STATS = [
+    { value: 1977, label: "Depuis", suffix: "" },
+    { value: 2, label: "Sites (Bertrix & Naninne)", suffix: "" },
+    {
+      value: pastEventsCount,
+      label: "Événements organisés",
+      suffix: eventSuffix,
+    },
+    { value: 100, label: "Pensés pour vous", suffix: "%" },
+  ];
+
   return (
     <section className="relative overflow-hidden bg-primary py-14 text-white sm:py-20">
       <div

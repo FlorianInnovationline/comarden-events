@@ -53,7 +53,7 @@ const eventsData: ComardenEvent[] = [
     dateLabel: "21 Mai 2026",
     audience: "Architectes",
     location: "Comarden — Bertrix",
-    horaires: "9h00 – 17h00",
+    horaires: "10h30 – 14h00",
     status: "past",
     teaser:
       "Une journée dédiée aux toitures plates EPDM et aux toitures végétales, pensée pour les architectes.",
@@ -99,7 +99,7 @@ const eventsData: ComardenEvent[] = [
     dateLabel: "21 Mai 2026",
     audience: "Couvreurs",
     location: "Comarden — Bertrix",
-    horaires: "9h00 – 17h00",
+    horaires: "17h00 – 21h30",
     status: "past",
     teaser:
       "Une journée pratique autour de l'EPDM et de la toiture végétale, pensée pour les couvreurs.",
