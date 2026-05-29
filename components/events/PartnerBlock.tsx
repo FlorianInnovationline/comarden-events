@@ -57,7 +57,7 @@ function PartnerLogo({ name }: { name: string }) {
   const [failed, setFailed] = useState(false);
 
   return (
-    <div className="flex h-28 shrink-0 items-center justify-center border-b border-primary/5 bg-neutral p-6">
+    <div className="flex h-36 shrink-0 items-center justify-center border-b border-primary/5 bg-neutral px-8 py-6">
       {failed ? (
         <div className="flex h-full w-full items-center justify-center rounded-xl border-2 border-dashed border-primary/15">
           {/* No logo file found — drop one at /public/images/logos/<slug>-logo.<ext> */}
@@ -71,7 +71,7 @@ function PartnerLogo({ name }: { name: string }) {
           key={LOGO_EXTENSIONS[extIndex]}
           src={partnerLogoSrc(name, LOGO_EXTENSIONS[extIndex])}
           alt={`Logo ${name}`}
-          className="h-14 max-w-[180px] object-contain"
+          className="h-20 max-w-[260px] object-contain"
           loading="lazy"
           onError={() => {
             const next = nextLogoSrc(name, extIndex);
