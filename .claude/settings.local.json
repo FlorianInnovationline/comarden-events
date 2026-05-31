@@ -8,7 +8,10 @@
       "Bash(node_modules/.bin/next build *)",
       "Bash(echo \"EXIT:$?\")",
       "Bash(npx next *)",
-      "Bash(rm /Users/floflo/Documents/comarden-events/components/jobs/JobDetailModal.tsx && mkdir -p /Users/floflo/Documents/comarden-events/components/jobs/detail && mkdir -p /Users/floflo/Documents/comarden-events/app/jobs/\\\\[slug\\\\])"
+      "Bash(rm /Users/floflo/Documents/comarden-events/components/jobs/JobDetailModal.tsx && mkdir -p /Users/floflo/Documents/comarden-events/components/jobs/detail && mkdir -p /Users/floflo/Documents/comarden-events/app/jobs/\\\\[slug\\\\])",
+      "Bash(git add *)",
+      "Bash(git push *)",
+      "Bash(git fetch *)"
     ]
   }
 }
