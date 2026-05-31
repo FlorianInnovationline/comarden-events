@@ -6,6 +6,10 @@
  * lib/events.ts, drops a README.txt + .gitkeep in each, and removes
  * .gitkeep once real media files are present.
  *
+ * Also provisions public/documents/<partner-slug>/ for every partner that
+ * offers downloadable documents (see DOCUMENT_FOLDERS below), so the user has
+ * a ready-made folder to drop the PDFs into.
+ *
  * Usage:
  *   node scripts/sync-event-folders.mjs   (or npm run sync-events)
  *
@@ -23,6 +27,24 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
 const EVENTS_TS = path.join(ROOT, "lib", "events.ts");
 const EVENTS_DIR = path.join(ROOT, "public", "images", "events");
+const DOCS_DIR = path.join(ROOT, "public", "documents");
+
+// Partner document folders to provision. Keep the filenames in sync with
+// lib/partner-profiles.ts (PartnerDocument.filename) so the README reads true.
+const DOCUMENT_FOLDERS = [
+  {
+    slug: "elevate",
+    label: "ELEVATE",
+    files: [
+      "01-test-longevite-membranes-epdm-elevate.pdf",
+      "02-demande-calcul-charge-vent-epdm-elevate.pdf",
+      "03-certifications-fm-elevate-resista-ak-rf.pdf",
+      "04-attestation-fabricant-pfas-epdm-elevate.pdf",
+      "05-membrane-epdm-rubbergard-eau-pluie-domestique.pdf",
+      "06-elevate-firescreen-sa-protection-feu-tpo.pdf",
+    ],
+  },
+];
 
 // ── 1. Extract (slug, title) pairs from lib/events.ts ────────────────────────
 // Matches the pattern:  slug: "..."  …  title: "..."  (in the same event block)
@@ -101,9 +123,48 @@ for (const { slug, title } of events) {
   }
 }
 
+// ── 4. Provision partner document folders ────────────────────────────────────
+let docsCreated = 0;
+
+for (const { slug, label, files } of DOCUMENT_FOLDERS) {
+  const dir = path.join(DOCS_DIR, slug);
+  const readmePath = path.join(dir, "README.txt");
+  const gitkeepPath = path.join(dir, ".gitkeep");
+
+  try {
+    const isNew = !fs.existsSync(dir);
+    fs.mkdirSync(dir, { recursive: true });
+
+    // Always write/refresh README.txt
+    fs.writeFileSync(readmePath, buildDocsReadme(label, slug, files), "utf8");
+
+    // Real PDFs present?
+    const pdfs = fs
+      .readdirSync(dir)
+      .filter((f) => f.toLowerCase().endsWith(".pdf"));
+
+    if (pdfs.length === 0) {
+      if (!fs.existsSync(gitkeepPath)) {
+        fs.writeFileSync(gitkeepPath, "", "utf8");
+      }
+    } else if (fs.existsSync(gitkeepPath)) {
+      fs.unlinkSync(gitkeepPath);
+    }
+
+    if (isNew) {
+      docsCreated++;
+      console.log(`  ✓ Created   public/documents/${slug}/`);
+    }
+  } catch (err) {
+    errors++;
+    console.error(`  ✗ Error for documents/${slug}:`, err.message);
+  }
+}
+
 const line =
-  `\nsync-event-folders: ${created} folder(s) created, ` +
-  `${existed} already existed, ${errors} error(s).`;
+  `\nsync-event-folders: ${created} event folder(s) created, ` +
+  `${existed} already existed, ${docsCreated} document folder(s) created, ` +
+  `${errors} error(s).`;
 console.log(line);
 
 if (errors > 0) process.exit(1);
@@ -123,5 +184,22 @@ function buildReadme(slug, title) {
     `\n` +
     `Le site lit automatiquement ce dossier au build.\n` +
     `Pas besoin de toucher au code.\n`
+  );
+}
+
+function buildDocsReadme(label, slug, files) {
+  return (
+    `Documents techniques du partenaire: ${label}\n` +
+    `\n` +
+    `Dépose ici les PDF à proposer au téléchargement sur la page événement.\n` +
+    `Tant qu'un fichier est absent, le bouton affiche « Bientôt disponible ».\n` +
+    `Dès qu'il est présent (et commité), le bouton « Télécharger » s'active.\n` +
+    `\n` +
+    `Noms de fichiers attendus (exacts, respecte la casse) :\n` +
+    files.map((f) => `  ${f}`).join("\n") +
+    `\n\n` +
+    `Chemin public servi : /documents/${slug}/<nom-du-fichier>.pdf\n` +
+    `Le site lit automatiquement ce dossier au build.\n` +
+    `Les fichiers DOIVENT être commités dans git (Vercel sert /public via le CDN).\n`
   );
 }

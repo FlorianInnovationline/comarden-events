@@ -52,11 +52,11 @@ export function JobsContactBand() {
           className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4"
         >
           <a
-            href={`mailto:${site.contact.email}`}
+            href="mailto:adebondt@comarden.be"
             className="group inline-flex min-h-[44px] items-center gap-2.5 rounded-full bg-accent px-6 py-3 text-sm font-bold text-primary shadow-sm transition-all hover:scale-[1.04] hover:shadow-glow"
           >
             <Mail className="h-4 w-4" />
-            {site.contact.email}
+            adebondt@comarden.be
           </a>
           <a
             href={site.contact.phoneHref}

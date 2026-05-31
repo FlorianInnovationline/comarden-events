@@ -9,10 +9,14 @@ import {
 } from "@/lib/events";
 import { Reveal } from "@/components/ui/Reveal";
 import { PartnerBlock } from "@/components/events/PartnerBlock";
+import { ElevateSection } from "@/components/events/partners/ElevateSection";
+import { FloratoitSection } from "@/components/events/partners/FloratoitSection";
 import { EventGallery } from "@/components/events/EventGallery";
 import { SectionTitle } from "@/components/ui/SectionTitle";
 import { Badge, DateBadge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
+import { getPartnerProfile } from "@/lib/partner-profiles";
+import { getAvailableDocumentFilenames } from "@/lib/partner-documents";
 import { splitDate } from "@/lib/format";
 
 export async function generateStaticParams() {
@@ -137,10 +141,35 @@ export default async function EventDetailPage({
                 title="Merci à nos partenaires"
                 description="Un compte-rendu rapide des interventions, et comment les recontacter."
               />
-              <div className="grid gap-5 md:grid-cols-2">
-                {event.partners.map((p) => (
-                  <PartnerBlock key={p.name} partner={p} />
-                ))}
+              <div className="space-y-8 sm:space-y-10">
+                {event.partners.map((partner) => {
+                  const profile = getPartnerProfile(partner.name);
+
+                  if (profile?.slug === "elevate") {
+                    return (
+                      <ElevateSection
+                        key={partner.name}
+                        partner={partner}
+                        profile={profile}
+                        availableDocuments={getAvailableDocumentFilenames(
+                          profile.slug
+                        )}
+                      />
+                    );
+                  }
+
+                  if (profile?.slug === "floratoit") {
+                    return (
+                      <FloratoitSection
+                        key={partner.name}
+                        partner={partner}
+                        profile={profile}
+                      />
+                    );
+                  }
+
+                  return <PartnerBlock key={partner.name} partner={partner} />;
+                })}
               </div>
             </div>
           )}
