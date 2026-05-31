@@ -1,17 +1,19 @@
 import { cn } from "@/lib/utils";
 
-// TODO: replace this wordmark with the real Comarden logo SVG once provided.
-// For now we render a clean text wordmark — the "O" is highlighted in accent
-// yellow as a stand-in for the roof-chevron accent in the official mark.
+/**
+ * Comarden brand logo rendered from the official PNG at /images/logo.png.
+ *
+ * The logo is yellow (#FFD500) on a transparent background, which reads well
+ * on dark surfaces (hero, footer). On light surfaces (scrolled header), pass
+ * `brightness-0` via className to render it as a dark silhouette.
+ */
 export function Logo({ className }: { className?: string }) {
   return (
-    <span className={cn("inline-flex items-baseline font-extrabold tracking-tight", className)}>
-      <span className="text-xl sm:text-2xl">C</span>
-      <span className="text-xl sm:text-2xl text-accent">O</span>
-      <span className="text-xl sm:text-2xl">MARDEN</span>
-      <span className="ml-2 hidden text-[0.65rem] font-bold uppercase tracking-kicker opacity-70 sm:inline">
-        Events
-      </span>
-    </span>
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src="/images/logo.png"
+      alt="Comarden"
+      className={cn("h-7 w-auto object-contain", className)}
+    />
   );
 }
