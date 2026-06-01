@@ -34,7 +34,7 @@ export function ValueStrip() {
       <div className="container">
         <SectionTitle
           kicker="L'esprit Comarden Events"
-          title="Un événement, ce n'est pas une obligation : c'est une rencontre."
+          title="Un événement, ce n'est pas une obligation : c'est une rencontre et une opportunité."
           description="Chaque édition est conçue pour vous apporter de la valeur, du contenu actionnable, et un vrai bon moment."
         />
 

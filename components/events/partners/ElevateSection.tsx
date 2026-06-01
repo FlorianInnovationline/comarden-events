@@ -74,7 +74,7 @@ export function ElevateSection({
           <ContactCard
             name={partner.contactName ?? "Contact"}
             email={partner.contactEmail ?? ""}
-            org={partner.name}
+            org={`Spécialiste ${partner.name}`}
           />
         )}
 
