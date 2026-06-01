@@ -49,6 +49,7 @@ const eventsData: ComardenEvent[] = [
   // ── PAST EVENTS ────────────────────────────────────────────────────────────
   {
     slug: "epdm-toiture-vegetale-architectes",
+    kind: "event",
     title: "Toiture Plate (ELEVATE) & Toiture Végétale",
     date: "2026-05-21",
     dateLabel: "21 Mai 2026",
@@ -98,6 +99,7 @@ const eventsData: ComardenEvent[] = [
   },
   {
     slug: "epdm-toiture-vegetale-couvreurs",
+    kind: "event",
     title: "Toiture Plate (ELEVATE) & Toiture Végétale",
     date: "2026-05-21",
     dateLabel: "21 Mai 2026",
@@ -143,65 +145,151 @@ const eventsData: ComardenEvent[] = [
     ]
   },
 
-  // ── UPCOMING EVENTS ────────────────────────────────────────────────────────
+  // ── UPCOMING — FORMATIONS & TEASER ──────────────────────────────────────────
+  // Order is intentional. `date` only drives sorting (ascending in À venir):
+  // Couvreurs (05-01) → Architectes (05-02) → SOPREMA teaser (08-31).
+  // Formations are ongoing offerings (no calendar marker); the teaser is a real
+  // event whose exact date is not yet public.
   {
-    slug: "formation-epdm-avance-architectes",
-    title: "Formation EPDM Avancé",
-    date: "2026-06-18",
-    dateLabel: "18 Juin 2026",
-    audience: "Architectes",
-    location: "Comarden — Naninne",
-    horaires: "9h00 – 17h00",
+    slug: "formations-sur-mesure-couvreurs",
+    kind: "formation",
     status: "upcoming",
+    title: "Formations sur mesure — Couvreurs",
+    date: "2026-05-01", // for sorting only, NOT shown as a day
+    dateLabel: "Mai → Octobre 2026",
+    audience: "Couvreurs",
+    coverage: "Partout en Belgique",
+    location: "Partout en Belgique",
     teaser:
-      "Approfondissez vos connaissances sur les systèmes EPDM pour toiture plate : dimensionnement, détails de rives et retours, cahiers des charges.",
+      "Des formations à la demande et sur mesure pour les couvreurs, partout en Belgique, de mai à octobre 2026.",
     intro:
-      "Nous organisons des formations à la demande spécialement conçues pour les architectes. Au préalable, nous vous envoyons un document permettant de recueillir vos attentes précises. Nous préparons ainsi la formation à partir d'un socle de base, que nous adaptons et complétons pour répondre exactement à vos besoins.",
-    partners: [
+      "Vous êtes couvreur et souhaitez monter en compétence sur l'EPDM, la toiture végétale ou les solutions de façade ? Nous organisons des formations à la demande et sur mesure, partout en Belgique, de mai à octobre. Nos formations « à la demande » et personnalisées sont adaptées à votre niveau et à vos chantiers.",
+    program: {
+      modules: [
+        { title: "EPDM Niveau 1", description: "initiation à la pose de membrane EPDM" },
+        { title: "EPDM Niveau 2", description: "perfectionnement et techniques avancées" },
+        { title: "Stacbond", description: "mise en œuvre de façade" },
+        { title: "Toiture végétale", description: "solutions de végétalisation" },
+        { title: "Soudobrasage", description: "techniques de soudobrasage pour toiture" }
+      ]
+    },
+    process: [
       {
-        name: "ELEVATE",
-        recap:
-          "ELEVATE interviendra pour présenter ses nouveaux systèmes EPDM et les outils d'aide à la prescription destinés aux architectes.",
-        contactName: "Sébastien Devresse",
-        contactEmail: "sdevresse@comarden.be",
-        website: "https://www.elevate-roofing.com"
+        title: "Vous nous contactez",
+        description: "Décrivez-nous vos besoins, votre niveau et vos chantiers actuels."
+      },
+      {
+        title: "On définit ensemble",
+        description: "Nous bâtissons un programme sur mesure adapté à votre équipe."
+      },
+      {
+        title: "On organise la session",
+        description: "Formation chez vous, sur chantier ou sur nos sites, partout en Belgique."
       }
     ],
-    // media: fallback used when public/images/events/formation-epdm-avance-architectes/ is empty.
-    // When real photos are dropped into that folder, they take precedence automatically.
-    media: [
-      { type: "image", src: placeholderImage("epdm-adv-1", 1200, 800), alt: "Atelier EPDM avancé" },
-      { type: "image", src: placeholderImage("epdm-adv-2", 1200, 800), alt: "Détails de rive EPDM" },
-      { type: "image", src: placeholderImage("epdm-adv-3", 1200, 800), alt: "Présentation technique" },
-      { type: "image", src: placeholderImage("epdm-adv-4", 1200, 800), alt: "Échanges entre architectes" },
-      { type: "image", src: placeholderImage("epdm-adv-5", 1200, 800), alt: "Visite du chantier école" },
-      { type: "image", src: placeholderImage("epdm-adv-6", 1200, 800), alt: "Session questions-réponses" }
-    ]
+    contactCta: {
+      label: "Organiser une formation",
+      mailto: "mailto:info@comarden.be?subject=Demande%20de%20formation%20Couvreurs"
+    },
+    partners: [],
+    media: []
   },
   {
-    slug: "journee-facade-parement-couvreurs",
-    title: "Journée Façade & Parement",
-    date: "2026-07-09",
-    dateLabel: "9 Juillet 2026",
-    audience: "Couvreurs",
-    location: "Comarden — Bertrix",
-    horaires: "9h00 – 16h30",
+    slug: "formations-sur-mesure-architectes",
+    kind: "formation",
     status: "upcoming",
+    title: "Formations sur mesure — Architectes",
+    date: "2026-05-02", // sorted right after Couvreurs
+    dateLabel: "Toute l'année 2026",
+    audience: "Architectes",
+    coverage: "Partout en Belgique",
+    location: "Partout en Belgique",
     teaser:
-      "Techniques de pose de bardages, systèmes de façades ventilées et finitions de parement : une journée pratique pensée pour les couvreurs.",
+      "Des formations à la demande spécialement conçues pour les architectes, toute l'année.",
     intro:
-      "Vous êtes couvreur et souhaitez monter en compétence sur l’EPDM, la toiture végétale ou les solutions de façade ? Nous organisons des formations à la demande et sur mesure, partout en Belgique, de mai à octobre. Au programme : EPDM Niveau 1 — initiation à la pose de membrane EPDM, EPDM Niveau 2 — perfectionnement et techniques avancées, Stacbond — mise en œuvre de façade, Toiture végétale — solutions de végétalisation, Soudobrasage. N’hésitez pas à nous contacter pour organiser la formation qui vous conviendra le mieux.",
+      "Nous organisons également des formations à la demande spécialement conçues pour les architectes. Au préalable, nous vous envoyons un document permettant de recueillir vos attentes précises. Nous préparons ainsi la formation à partir d'un socle de base, que nous adaptons et complétons pour répondre exactement à vos besoins.",
+    program: {
+      customNote:
+        "Le programme est défini avec vous, en fonction de vos projets et des thématiques que vous souhaitez approfondir.",
+      modules: [
+        {
+          title: "EPDM & toitures plates",
+          description: "spécifications techniques, dimensionnement, cahiers des charges"
+        },
+        {
+          title: "Toiture végétale",
+          description: "principes, mise en œuvre, intégration paysagère"
+        },
+        { title: "Solutions de façade", description: "Stacbond et systèmes ventilés" },
+        { title: "Sur demande", description: "thématiques personnalisées selon vos projets" }
+      ]
+    },
+    process: [
+      {
+        title: "Vous nous contactez",
+        description: "Un premier échange pour comprendre vos besoins."
+      },
+      {
+        title: "Document de cadrage",
+        description: "Nous vous envoyons un document pour recueillir vos attentes précises."
+      },
+      {
+        title: "Formation sur mesure",
+        description:
+          "Nous bâtissons la session à partir d'un socle de base, adaptée à vos projets."
+      }
+    ],
+    contactCta: {
+      label: "Demander une formation",
+      mailto: "mailto:info@comarden.be?subject=Demande%20de%20formation%20Architectes"
+    },
     partners: [],
-    // media: fallback used when public/images/events/journee-facade-parement-couvreurs/ is empty.
-    // When real photos are dropped into that folder, they take precedence automatically.
-    media: [
-      { type: "image", src: placeholderImage("facade-1", 1200, 800), alt: "Pose de bardage" },
-      { type: "image", src: placeholderImage("facade-2", 1200, 800), alt: "Système façade ventilée" },
-      { type: "image", src: placeholderImage("facade-3", 1200, 800), alt: "Démonstration pratique" },
-      { type: "image", src: placeholderImage("facade-4", 1200, 800), alt: "Finitions de parement" },
-      { type: "image", src: placeholderImage("facade-5", 1200, 800), alt: "Matériaux exposés" },
-      { type: "image", src: placeholderImage("facade-6", 1200, 800), alt: "Moment d’échange" }
-    ]
+    media: []
+  },
+  {
+    slug: "evenement-exclusif-soprema-2026",
+    kind: "teaser",
+    status: "upcoming",
+    title: "Événement exclusif SOPREMA",
+    date: "2026-08-31", // approximate end-of-August
+    dateLabel: "Fin août 2026",
+    dateRevealed: false,
+    location: "Naninne & Bertrix",
+    teaser:
+      "Une journée 100% dédiée à la gamme SOPREMA, sur nos deux sites. Date complète révélée prochainement.",
+    intro:
+      "Dans quelques jours, nous vous dévoilerons la date d'une journée exceptionnelle organisée sur nos sites de Naninne et de Bertrix. Une journée 100% dédiée à la gamme complète SOPREMA : découverte des produits, formations techniques, conseils d'experts et inspiration pour vos chantiers.",
+    program: {
+      modules: [
+        {
+          title: "Visite des deux sites",
+          description: "Naninne et Bertrix en une seule journée"
+        },
+        {
+          title: "Formations & démonstrations",
+          description: "sur l'ensemble de la gamme SOPREMA"
+        },
+        {
+          title: "Échanges avec nos experts",
+          description: "questions, conseils et retours d'expérience"
+        }
+      ]
+    },
+    callout: "Une surprise de taille… à découvrir très prochainement !",
+    contactCta: {
+      label: "Recevoir les détails",
+      mailto:
+        "mailto:info@comarden.be?subject=Informations%20%C3%A9v%C3%A9nement%20SOPREMA"
+    },
+    partners: [
+      {
+        name: "SOPREMA",
+        recap:
+          "Référence européenne en étanchéité, isolation, couverture et solutions végétales. Plus d'un siècle d'innovation au service des professionnels de la toiture.",
+        website: "https://www.soprema.be"
+      }
+    ],
+    media: []
   }
 ];
 

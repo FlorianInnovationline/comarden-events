@@ -24,13 +24,21 @@ interface CalendarViewProps {
 export function CalendarView({ events, onDayClick, filterKey }: CalendarViewProps) {
   const reduce = useReducedMotion();
 
-  // Default to the month of the nearest event in the filtered list
+  // Formations are ongoing offerings with no specific date — they never appear
+  // on the calendar (a dot-per-month would clutter). Only "event" and "teaser"
+  // entries get a marker.
+  const calendarEvents = useMemo(
+    () => events.filter((e) => e.kind !== "formation"),
+    [events]
+  );
+
+  // Default to the month of the nearest dated entry in the filtered list
   const defaultYM = useMemo(() => {
-    const sorted = [...events].sort(
+    const sorted = [...calendarEvents].sort(
       (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
     );
     // For past events (sorted descending when caller sorts), we want most recent.
-    // `events` are already filtered by the parent — just take the first one.
+    // `calendarEvents` are already filtered by the parent — just take the first one.
     const target = sorted[0];
     if (target) {
       const d = new Date(target.date);
@@ -38,7 +46,7 @@ export function CalendarView({ events, onDayClick, filterKey }: CalendarViewProp
     }
     const now = new Date();
     return { year: now.getFullYear(), month: now.getMonth() };
-  }, [events]);
+  }, [calendarEvents]);
 
   const [year, setYear] = useState(defaultYM.year);
   const [month, setMonth] = useState(defaultYM.month);
@@ -65,13 +73,13 @@ export function CalendarView({ events, onDayClick, filterKey }: CalendarViewProp
   // Build a lookup: "YYYY-MM-DD" → events[]
   const eventsByDay = useMemo(() => {
     const map = new Map<string, ComardenEvent[]>();
-    for (const e of events) {
+    for (const e of calendarEvents) {
       const key = e.date.slice(0, 10);
       const existing = map.get(key) ?? [];
       map.set(key, [...existing, e]);
     }
     return map;
-  }, [events]);
+  }, [calendarEvents]);
 
   const goToMonth = (delta: number) => {
     setDir(delta);
@@ -174,6 +182,9 @@ export function CalendarView({ events, onDayClick, filterKey }: CalendarViewProp
                   const dayEvents = eventsByDay.get(dateKey) ?? [];
                   const hasEvents = dayEvents.length > 0;
                   const isToday = isSameDay(cell.date, today);
+                  // Approximate = only teasers on this day (no confirmed event).
+                  const isApprox =
+                    hasEvents && !dayEvents.some((e) => e.kind === "event");
 
                   return (
                     <div
@@ -191,23 +202,44 @@ export function CalendarView({ events, onDayClick, filterKey }: CalendarViewProp
                             "group absolute inset-0 flex flex-col items-center justify-start pt-1.5 sm:pt-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accent",
                             "transition-colors hover:bg-accent/10"
                           )}
-                          aria-label={`${cell.date.getDate()} — ${dayEvents.length} événement${dayEvents.length > 1 ? "s" : ""}`}
+                          aria-label={`${cell.date.getDate()} — ${dayEvents.length} ${
+                            isApprox ? "événement à confirmer" : "événement"
+                          }${dayEvents.length > 1 ? "s" : ""}`}
                         >
-                          {/* Day number */}
-                          <span
+                          {/* Day number — solid for confirmed events, dashed ring (pulse) for teasers */}
+                          <motion.span
                             className={cn(
-                              "flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold transition-colors sm:h-7 sm:w-7 sm:text-sm",
+                              "flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold sm:h-7 sm:w-7 sm:text-sm",
                               isToday
                                 ? "bg-primary text-white"
-                                : "bg-accent text-primary group-hover:bg-accent-dark"
+                                : isApprox
+                                ? "border-2 border-dashed border-accent bg-white text-primary group-hover:border-accent-dark"
+                                : "bg-accent text-primary transition-colors group-hover:bg-accent-dark"
                             )}
+                            animate={
+                              isApprox && !isToday && !reduce
+                                ? { scale: [1, 1.12, 1] }
+                                : { scale: 1 }
+                            }
+                            transition={
+                              isApprox && !isToday && !reduce
+                                ? { repeat: Infinity, duration: 2, ease: "easeInOut" }
+                                : { duration: 0.2 }
+                            }
                           >
                             {cell.date.getDate()}
-                          </span>
+                          </motion.span>
                           {/* Event dots */}
                           <div className="mt-1 flex items-center justify-center gap-0.5">
                             {dayEvents.length === 1 ? (
-                              <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                              <span
+                                className={cn(
+                                  "h-1.5 w-1.5 rounded-full",
+                                  isApprox
+                                    ? "border border-accent-dark bg-transparent"
+                                    : "bg-primary"
+                                )}
+                              />
                             ) : (
                               <span className="rounded-full bg-primary px-1 text-[0.55rem] font-bold text-white">
                                 {dayEvents.length}
@@ -243,6 +275,10 @@ export function CalendarView({ events, onDayClick, filterKey }: CalendarViewProp
         <span className="flex items-center gap-1.5">
           <span className="h-4 w-4 rounded-full bg-accent" />
           Événement
+        </span>
+        <span className="flex items-center gap-1.5">
+          <span className="h-4 w-4 rounded-full border-2 border-dashed border-accent bg-white" />
+          À confirmer
         </span>
         <span className="flex items-center gap-1.5">
           <span className="h-4 w-4 rounded-full bg-primary" />

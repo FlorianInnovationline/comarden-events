@@ -22,7 +22,10 @@ export function NewsletterCTA() {
   };
 
   return (
-    <section className="relative overflow-hidden bg-accent py-14 text-primary sm:py-20 lg:py-24">
+    <section
+      id="newsletter"
+      className="relative scroll-mt-24 overflow-hidden bg-accent py-14 text-primary sm:py-20 lg:py-24"
+    >
       <motion.span
         aria-hidden
         className="absolute -left-16 -top-16 h-48 w-48 rounded-full bg-primary/10 blur-2xl"
