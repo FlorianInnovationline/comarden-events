@@ -45,7 +45,7 @@ export function Header() {
           aria-label="Comarden Events — Accueil"
           className="group flex items-center gap-2"
         >
-          <Logo className={cn("h-10 w-auto transition-all duration-300 sm:h-12", scrolled && "brightness-0")} />
+          <Logo className="h-10 w-auto sm:h-12" navy={scrolled} />
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex">
