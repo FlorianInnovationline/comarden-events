@@ -104,44 +104,11 @@ export default async function EventDetailPage({
             )}
           </div>
 
-          <div className="mt-6 grid gap-6 lg:grid-cols-[auto,1fr] lg:items-end lg:gap-8">
-            {/* Date / kind slot */}
-            {isFormation ? (
-              <div className="flex h-20 w-20 flex-col items-center justify-center gap-1.5 rounded-2xl bg-accent px-2 text-primary shadow-soft sm:h-24 sm:w-24">
-                <GraduationCap className="h-7 w-7 sm:h-8 sm:w-8" />
-                <span className="text-center text-[0.55rem] font-extrabold uppercase leading-tight tracking-kicker sm:text-[0.6rem]">
-                  Formation
-                  <br />
-                  sur mesure
-                </span>
-              </div>
-            ) : isTeaser ? (
-              <div className="inline-flex items-center gap-3 rounded-2xl bg-white/10 px-5 py-4 ring-1 ring-white/15">
-                <Sparkles className="h-8 w-8 shrink-0 text-accent" />
-                <div>
-                  <span className="block text-lg font-extrabold text-white">
-                    {event.dateLabel}
-                  </span>
-                  {event.dateRevealed === false && (
-                    <span className="mt-1 inline-flex items-center rounded-full bg-accent/25 px-2.5 py-0.5 text-[0.6rem] font-bold uppercase tracking-kicker text-white">
-                      Date à confirmer
-                    </span>
-                  )}
-                </div>
-              </div>
-            ) : (
-              <DateBadge
-                day={day}
-                month={month}
-                year={year}
-                className="h-20 w-20 sm:h-24 sm:w-24"
-              />
-            )}
-
-            <div>
-              {/* Teaser partner lockup: "SOPREMA × Comarden Events" */}
-              {isTeaser && partner && (
-                <div className="mb-5 inline-flex items-center gap-3 rounded-2xl bg-white/95 px-4 py-2.5 shadow-soft">
+          {isTeaser ? (
+            /* Teaser hero — clean stacked layout */
+            <div className="mt-6 max-w-3xl">
+              {partner && (
+                <div className="mb-5 flex w-fit items-center gap-3 rounded-2xl bg-white/95 px-4 py-2.5 shadow-soft">
                   <PartnerLogo
                     name={partner.name}
                     imgClassName="h-9 max-w-[140px] object-contain"
@@ -154,98 +121,147 @@ export default async function EventDetailPage({
               )}
 
               {subEyebrow && (
-                <span className="kicker text-accent">{subEyebrow}</span>
+                <span className="kicker block text-accent">{subEyebrow}</span>
               )}
-              <h1 className="heading-xl text-balance sm:mt-1.5">{event.title}</h1>
+              <h1 className="heading-xl mt-2 text-balance sm:mt-3">
+                {event.title}
+              </h1>
 
-              <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-xs text-white/85 sm:mt-5 sm:gap-x-6 sm:gap-y-3 sm:text-sm">
-                {isFormation ? (
-                  <>
-                    {event.audience && (
-                      <span className="inline-flex items-center gap-2">
-                        <Users className="h-4 w-4 shrink-0 text-accent" />
-                        {event.audience}
-                      </span>
-                    )}
-                    {(event.coverage || event.location) && (
-                      <span className="inline-flex items-center gap-2">
-                        <MapPin className="h-4 w-4 shrink-0 text-accent" />
-                        <span className="break-words">
-                          {event.coverage ?? event.location}
-                        </span>
-                      </span>
-                    )}
-                    <span className="inline-flex items-center gap-2">
-                      <CalendarRange className="h-4 w-4 shrink-0 text-accent" />
-                      {event.dateLabel}
+              <div className="mt-5 flex flex-col gap-3 sm:mt-6 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-5 sm:gap-y-3">
+                <span className="inline-flex w-fit items-center gap-2.5 rounded-full bg-white/10 px-4 py-2 ring-1 ring-white/15">
+                  <Sparkles className="h-4 w-4 shrink-0 text-accent" />
+                  <span className="text-sm font-extrabold text-white">
+                    {event.dateLabel}
+                  </span>
+                  {event.dateRevealed === false && (
+                    <span className="rounded-full bg-accent/25 px-2 py-0.5 text-[0.6rem] font-bold uppercase tracking-kicker text-white">
+                      Date à confirmer
                     </span>
-                  </>
-                ) : (
-                  <>
-                    {event.location && (
-                      <span className="inline-flex items-center gap-2">
-                        <MapPin className="h-4 w-4 shrink-0 text-accent" />
-                        <span className="break-words">{event.location}</span>
-                      </span>
-                    )}
-                    {event.horaires && (
-                      <span className="inline-flex items-center gap-2">
-                        <Clock className="h-4 w-4 shrink-0 text-accent" />
-                        {event.horaires}
-                      </span>
-                    )}
-                    <span className="inline-flex items-center gap-2">
-                      <span className="text-accent">•</span>
-                      {event.dateLabel}
-                    </span>
-                  </>
+                  )}
+                </span>
+                {event.location && (
+                  <span className="inline-flex items-center gap-2 text-sm text-white/85">
+                    <MapPin className="h-4 w-4 shrink-0 text-accent" />
+                    <span className="break-words">{event.location}</span>
+                  </span>
                 )}
               </div>
 
-              {/* Formation: "how it works" mini sequence */}
-              {isFormation && event.process && event.process.length > 0 && (
-                <ol className="mt-6 flex flex-wrap items-center gap-x-2 gap-y-3 text-xs font-semibold text-white/85 sm:text-sm">
-                  {event.process.map((s, i) => (
-                    <li key={s.title} className="inline-flex items-center gap-2">
-                      <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/10 text-[0.7rem] font-extrabold text-accent ring-1 ring-white/15">
-                        {i + 1}
-                      </span>
-                      <span>{s.title}</span>
-                      {i < event.process!.length - 1 && (
-                        <ArrowRight className="h-3.5 w-3.5 text-accent" />
-                      )}
-                    </li>
-                  ))}
-                </ol>
+              <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                {event.contactCta && (
+                  <Button
+                    href={event.contactCta.mailto}
+                    variant="secondary"
+                    size="md"
+                    external
+                    className="w-full justify-center sm:w-auto"
+                  >
+                    {event.contactCta.label}
+                    <ArrowRight className="h-4 w-4" />
+                  </Button>
+                )}
+                <Button
+                  href="/#newsletter"
+                  variant="ghost"
+                  size="md"
+                  className="w-full justify-center text-white ring-1 ring-white/25 hover:bg-white/10 sm:w-auto"
+                >
+                  Restez connectés
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <div className="mt-6 grid gap-6 lg:grid-cols-[auto,1fr] lg:items-end lg:gap-8">
+              {/* Date / kind slot */}
+              {isFormation ? (
+                <div className="flex h-20 w-20 flex-col items-center justify-center gap-1.5 rounded-2xl bg-accent px-2 text-primary shadow-soft sm:h-24 sm:w-24">
+                  <GraduationCap className="h-7 w-7 sm:h-8 sm:w-8" />
+                  <span className="text-center text-[0.55rem] font-extrabold uppercase leading-tight tracking-kicker sm:text-[0.6rem]">
+                    Formation
+                    <br />
+                    sur mesure
+                  </span>
+                </div>
+              ) : (
+                <DateBadge
+                  day={day}
+                  month={month}
+                  year={year}
+                  className="h-20 w-20 sm:h-24 sm:w-24"
+                />
               )}
 
-              {/* Teaser: hero CTAs */}
-              {isTeaser && (
-                <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-                  {event.contactCta && (
-                    <Button
-                      href={event.contactCta.mailto}
-                      variant="secondary"
-                      size="md"
-                      external
-                      className="w-full justify-center sm:w-auto"
-                    >
-                      {event.contactCta.label}
-                      <ArrowRight className="h-4 w-4" />
-                    </Button>
+              <div>
+                {subEyebrow && (
+                  <span className="kicker block text-accent">{subEyebrow}</span>
+                )}
+                <h1 className="heading-xl text-balance sm:mt-1.5">
+                  {event.title}
+                </h1>
+
+                <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-xs text-white/85 sm:mt-5 sm:gap-x-6 sm:gap-y-3 sm:text-sm">
+                  {isFormation ? (
+                    <>
+                      {event.audience && (
+                        <span className="inline-flex items-center gap-2">
+                          <Users className="h-4 w-4 shrink-0 text-accent" />
+                          {event.audience}
+                        </span>
+                      )}
+                      {(event.coverage || event.location) && (
+                        <span className="inline-flex items-center gap-2">
+                          <MapPin className="h-4 w-4 shrink-0 text-accent" />
+                          <span className="break-words">
+                            {event.coverage ?? event.location}
+                          </span>
+                        </span>
+                      )}
+                      <span className="inline-flex items-center gap-2">
+                        <CalendarRange className="h-4 w-4 shrink-0 text-accent" />
+                        {event.dateLabel}
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      {event.location && (
+                        <span className="inline-flex items-center gap-2">
+                          <MapPin className="h-4 w-4 shrink-0 text-accent" />
+                          <span className="break-words">{event.location}</span>
+                        </span>
+                      )}
+                      {event.horaires && (
+                        <span className="inline-flex items-center gap-2">
+                          <Clock className="h-4 w-4 shrink-0 text-accent" />
+                          {event.horaires}
+                        </span>
+                      )}
+                      <span className="inline-flex items-center gap-2">
+                        <span className="text-accent">•</span>
+                        {event.dateLabel}
+                      </span>
+                    </>
                   )}
-                  <Button
-                    href="/#newsletter"
-                    variant="ghost"
-                    size="md"
-                    className="w-full justify-center text-white ring-1 ring-white/25 hover:bg-white/10 sm:w-auto"
-                  >
-                    Restez connectés
-                  </Button>
                 </div>
-              )}
+
+                {/* Formation: "how it works" mini sequence */}
+                {isFormation && event.process && event.process.length > 0 && (
+                  <ol className="mt-6 flex flex-wrap items-center gap-x-2 gap-y-3 text-xs font-semibold text-white/85 sm:text-sm">
+                    {event.process.map((s, i) => (
+                      <li key={s.title} className="inline-flex items-center gap-2">
+                        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/10 text-[0.7rem] font-extrabold text-accent ring-1 ring-white/15">
+                          {i + 1}
+                        </span>
+                        <span>{s.title}</span>
+                        {i < event.process!.length - 1 && (
+                          <ArrowRight className="h-3.5 w-3.5 text-accent" />
+                        )}
+                      </li>
+                    ))}
+                  </ol>
+                )}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </section>
 
