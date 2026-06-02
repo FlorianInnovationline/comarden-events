@@ -443,12 +443,15 @@ function TeaserItem({
 
           {partner && (
             <div className="absolute inset-0 flex items-center justify-center p-6">
-              <div className="rounded-2xl bg-white px-6 py-4 shadow-xl">
+              <div className="rounded-3xl bg-white px-8 py-6 shadow-2xl ring-1 ring-white/40 sm:px-12 sm:py-8 transition-transform duration-500 group-hover:scale-[1.03]">
                 <PartnerLogo
                   name={partner.name}
-                  imgClassName="h-12 max-w-[180px] object-contain"
-                  fallbackClassName="text-2xl"
+                  imgClassName="h-16 max-w-[240px] object-contain sm:h-20 sm:max-w-[280px]"
+                  fallbackClassName="text-3xl sm:text-4xl"
                 />
+                <span className="mt-2 block text-center text-[0.55rem] font-bold uppercase tracking-kicker text-primary/60 sm:text-[0.6rem]">
+                  × Comarden Events
+                </span>
               </div>
             </div>
           )}

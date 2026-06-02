@@ -41,6 +41,11 @@ export function EventsShowcase({ events }: EventsShowcaseProps) {
   const filtered = useMemo(() => {
     const list = events.filter((e) => e.status === filter);
     return list.sort((a, b) => {
+      if (filter === "upcoming") {
+        const ta = a.kind === "teaser" ? 0 : 1;
+        const tb = b.kind === "teaser" ? 0 : 1;
+        if (ta !== tb) return ta - tb;
+      }
       const aT = new Date(a.date).getTime();
       const bT = new Date(b.date).getTime();
       return filter === "upcoming" ? aT - bT : bT - aT;
