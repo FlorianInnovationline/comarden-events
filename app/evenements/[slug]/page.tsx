@@ -309,12 +309,15 @@ export default async function EventDetailPage({
                     title="Merci à nos partenaires"
                     description="Un compte-rendu rapide des interventions, et comment les recontacter."
                   />
-                  <div className="space-y-8 sm:space-y-10">
-                    {event.partners.map((p) => {
+                  {(() => {
+                    const specialized: React.ReactNode[] = [];
+                    const generic: React.ReactNode[] = [];
+
+                    event.partners.forEach((p) => {
                       const profile = getPartnerProfile(p.name);
 
                       if (profile?.slug === "elevate") {
-                        return (
+                        specialized.push(
                           <ElevateSection
                             key={p.name}
                             partner={p}
@@ -324,21 +327,36 @@ export default async function EventDetailPage({
                             )}
                           />
                         );
-                      }
-
-                      if (profile?.slug === "floratoit") {
-                        return (
+                      } else if (profile?.slug === "floratoit") {
+                        specialized.push(
                           <FloratoitSection
                             key={p.name}
                             partner={p}
                             profile={profile}
                           />
                         );
+                      } else {
+                        generic.push(
+                          <PartnerBlock key={p.name} partner={p} />
+                        );
                       }
+                    });
 
-                      return <PartnerBlock key={p.name} partner={p} />;
-                    })}
-                  </div>
+                    return (
+                      <>
+                        {specialized.length > 0 && (
+                          <div className="space-y-8 sm:space-y-10">
+                            {specialized}
+                          </div>
+                        )}
+                        {generic.length > 0 && (
+                          <div className="grid gap-6 sm:gap-8 md:grid-cols-2">
+                            {generic}
+                          </div>
+                        )}
+                      </>
+                    );
+                  })()}
                 </div>
               )}
             </div>

@@ -48,6 +48,60 @@ const placeholderImage = (seed: string, w = 1200, h = 800) =>
 const eventsData: ComardenEvent[] = [
   // ── PAST EVENTS ────────────────────────────────────────────────────────────
   {
+    slug: "evenement-ardoises-morepire",
+    kind: "event",
+    status: "past",
+    title: "Événement Ardoises — Morepire",
+    date: "2026-03-26",
+    dateLabel: "26 mars 2026",
+    audience: "Couvreurs",
+    location: "Comarden — Bertrix",
+    horaires: undefined,
+    teaser:
+      "Une soirée dédiée à l'ardoise, l'ADN de Comarden, avec visite exclusive de l'ancienne mine d'ardoises de Bertrix.",
+    intro:
+      "Le 26 mars 2026, nous avons organisé un événement unique dédié à l'ardoise. L'ardoise, c'est l'ADN de Comarden. Mais au-delà d'être un matériau naturel, c'est aussi un produit complexe qui exige du savoir-faire, tant du côté des poseurs que du négoce qui les approvisionne. Nous avons eu l'occasion d'expliquer les ATG qui accompagnent nos ardoises et de rappeler l'importance du tri. La soirée a été agrémentée d'un moment exceptionnel : la visite de l'ancienne mine d'ardoises de Bertrix, appelée la Morepire. Une visite qui en valait vraiment la peine, c'est en tout cas ce que nous ont confié les participants. Merci à tous les nombreux visiteurs présents pour cette belle soirée.",
+    partners: [
+      {
+        name: "TYVEK",
+        recap:
+          "Présentation de leur gamme avec de riches explications et de précieux conseils pratiques pour les installateurs.",
+        contactName: undefined,
+        contactEmail: undefined,
+        // TODO: confirmer l'URL officielle (probablement https://www.dupont.com/tyvek)
+        website: undefined,
+      },
+      {
+        name: "Strato Grip",
+        recap:
+          "Présentation de leur gamme de colles en fût, accompagnée de démonstrations impressionnantes.",
+        contactName: undefined,
+        contactEmail: undefined,
+        // TODO: confirmer l'URL officielle
+        website: undefined,
+      },
+      {
+        name: "Vertuoza",
+        recap:
+          "Présentation de leur logiciel de devis et de gestion de chantier.",
+        contactName: undefined,
+        contactEmail: undefined,
+        // TODO: confirmer l'URL officielle (probablement https://www.vertuoza.com)
+        website: undefined,
+      },
+      {
+        name: "Ardoisières de Fonsagrada",
+        recap:
+          "Notre fournisseur d'ardoises naturelles. Une partie importante de la qualité Comarden vient de ce partenariat de longue date.",
+        contactName: undefined,
+        contactEmail: undefined,
+        // TODO: confirmer l'URL officielle et le recap exact (à valider avec le client)
+        website: undefined,
+      },
+    ],
+    media: [],
+  },
+  {
     slug: "epdm-toiture-vegetale-architectes",
     kind: "event",
     title: "Toiture Plate (ELEVATE) & Toiture Végétale",
