@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { ExternalLink, Leaf } from "lucide-react";
 import type { EventPartner } from "@/types/events";
@@ -7,6 +8,16 @@ import type { PartnerProfile } from "@/lib/partner-profiles";
 import { ContactCard } from "@/components/events/ContactCard";
 import { PartnerLogo } from "@/components/events/partners/PartnerLogo";
 import { Button } from "@/components/ui/Button";
+
+/**
+ * Partner photos live in /public/images/partners/floratoit/.
+ * Drop up to 2 images named 01-<desc>.jpg and 02-<desc>.jpg.
+ * The component renders them automatically when present.
+ */
+const FLORATOIT_PHOTOS = [
+  "/images/partners/floratoit/01-floratoit.jpg",
+  "/images/partners/floratoit/02-floratoit.jpg",
+] as const;
 
 interface FloratoitSectionProps {
   partner: EventPartner;
@@ -22,19 +33,25 @@ export function FloratoitSection({ partner, profile }: FloratoitSectionProps) {
       transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
       className="overflow-hidden rounded-3xl bg-white shadow-soft ring-1 ring-primary/5"
     >
-      <div className="grid sm:grid-cols-[16rem,1fr]">
-        {/* ── Logo panel ──────────────────────────────────────────────────── */}
-        <div className="relative flex items-center justify-center border-b border-primary/5 bg-gradient-to-b from-green-50 to-neutral px-8 py-10 sm:border-b-0 sm:border-r sm:px-10">
-          <span
-            aria-hidden
-            className="absolute left-5 top-5 inline-flex h-9 w-9 items-center justify-center rounded-full bg-green-600/10 text-green-700"
-          >
-            <Leaf className="h-4 w-4" />
-          </span>
-          <PartnerLogo
-            name={partner.name}
-            imgClassName="h-16 max-w-[190px] object-contain"
-          />
+      <div className="grid sm:grid-cols-[20rem,1fr]">
+        {/* ── Logo panel + photos ────────────────────────────────────────── */}
+        <div className="relative flex flex-col border-b border-primary/5 bg-gradient-to-b from-green-50 to-neutral sm:border-b-0 sm:border-r">
+          {/* Logo area */}
+          <div className="relative flex flex-1 items-center justify-center px-8 py-10 sm:px-10">
+            <span
+              aria-hidden
+              className="absolute left-5 top-5 inline-flex h-9 w-9 items-center justify-center rounded-full bg-green-600/10 text-green-700"
+            >
+              <Leaf className="h-4 w-4" />
+            </span>
+            <PartnerLogo
+              name={partner.name}
+              imgClassName="h-24 max-w-[220px] object-contain sm:h-28 sm:max-w-[240px]"
+            />
+          </div>
+
+          {/* Photo showcase — auto-hidden when images are missing */}
+          <FloratoitPhotos />
         </div>
 
         {/* ── Content ─────────────────────────────────────────────────────── */}
@@ -74,5 +91,43 @@ export function FloratoitSection({ partner, profile }: FloratoitSectionProps) {
         </div>
       </div>
     </motion.article>
+  );
+}
+
+/**
+ * Renders 2 partner photos in a tight mosaic.
+ * Each image gracefully hides itself on load error (file not yet uploaded).
+ * When both are missing the entire block collapses to zero height.
+ */
+function FloratoitPhotos() {
+  const [visible, setVisible] = useState<boolean[]>(
+    () => FLORATOIT_PHOTOS.map(() => true)
+  );
+
+  const anyVisible = visible.some(Boolean);
+  if (!anyVisible) return null;
+
+  return (
+    <div className="grid grid-cols-2 gap-1.5 px-4 pb-4">
+      {FLORATOIT_PHOTOS.map((src, i) =>
+        visible[i] ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            key={src}
+            src={src}
+            alt={`Floratoit — photo ${i + 1}`}
+            className="aspect-[4/3] w-full rounded-xl object-cover shadow-soft"
+            loading="lazy"
+            onError={() =>
+              setVisible((prev) => {
+                const next = [...prev];
+                next[i] = false;
+                return next;
+              })
+            }
+          />
+        ) : null
+      )}
+    </div>
   );
 }
