@@ -5,7 +5,7 @@ import { JobsPageContent } from "@/components/jobs/JobsPageContent";
 export const metadata: Metadata = {
   title: "Jobs",
   description:
-    "Comarden recrute : trois postes ouverts en Belgique francophone. Commercial·e interne à Naninne, commercial·e interne à Bertrix, commercial·e externe en Wallonie. CDI, temps plein, package attractif.",
+    "Comarden recrute : deux postes ouverts en Belgique francophone. Commercial·e interne à Bertrix et magasinier·ère à Naninne. CDI, temps plein, package attractif.",
 };
 
 export default async function JobsPage() {

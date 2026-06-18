@@ -82,7 +82,7 @@ export function JobsHero() {
           transition={{ duration: 0.5, delay: 0.85 }}
           className="mt-5 flex flex-wrap gap-2 sm:mt-6"
         >
-          {["Naninne", "Bertrix", "Plusieurs postes ouverts"].map((tag) => (
+          {["Naninne", "Bertrix", "Deux postes ouverts"].map((tag) => (
             <span
               key={tag}
               className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 text-xs font-bold uppercase tracking-kicker text-white/90 ring-1 ring-white/20"

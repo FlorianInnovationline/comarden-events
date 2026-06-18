@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
-import { MapPin, Store, TrendingUp, ArrowRight } from "lucide-react";
+import { MapPin, Store, Warehouse, ArrowRight } from "lucide-react";
 import type { JobPosting } from "@/types/jobs";
 
 interface JobCardProps {
@@ -10,7 +10,7 @@ interface JobCardProps {
   index: number;
 }
 
-const ICONS = [Store, Store, TrendingUp];
+const ICONS = [Store, Warehouse];
 
 export function JobCard({ job, index }: JobCardProps) {
   const reduce = useReducedMotion();

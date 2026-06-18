@@ -15,12 +15,12 @@ export function JobOffersSection({ jobs }: JobOffersSectionProps) {
         <SectionTitle
           kicker="Nos offres"
           title="Les postes ouverts"
-          description="Trois postes à pourvoir dès maintenant sur nos sites de Naninne et Bertrix, ainsi qu'en Wallonie."
+          description="Deux postes à pourvoir dès maintenant sur nos sites de Naninne et Bertrix."
           align="center"
           className="mb-12 sm:mb-14"
         />
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mx-auto grid max-w-3xl gap-6 sm:grid-cols-2">
           {jobs.map((job, i) => (
             <JobCard key={job.slug} job={job} index={i} />
           ))}
