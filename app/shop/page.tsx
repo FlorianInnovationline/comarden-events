@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Search, ShoppingBag } from "lucide-react";
 import { getCategories, getProducts } from "@/lib/shop/queries";
+import { BrandsSection } from "@/components/shop/BrandsSection";
 import { CategoryCard } from "@/components/shop/CategoryCard";
 import { ProductCard } from "@/components/shop/ProductCard";
 import { SectionTitle } from "@/components/ui/SectionTitle";
@@ -64,6 +65,9 @@ export default async function ShopPage({ searchParams }: PageProps) {
           </form>
         </div>
       </section>
+
+      {/* Brands */}
+      {!search && <BrandsSection />}
 
       {/* Categories */}
       {!search && categories.length > 0 && (
