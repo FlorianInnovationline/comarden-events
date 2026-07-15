@@ -17,7 +17,13 @@ const nextConfig = {
       { protocol: "https", hostname: "fastly.picsum.photos" },
       { protocol: "https", hostname: "images.unsplash.com" },
       { protocol: "https", hostname: "img.youtube.com" },
-      { protocol: "https", hostname: "i.ytimg.com" }
+      { protocol: "https", hostname: "i.ytimg.com" },
+      // Supabase Storage public buckets (product images from the shared catalog)
+      {
+        protocol: "https",
+        hostname: "*.supabase.co",
+        pathname: "/storage/v1/object/public/**"
+      }
     ]
   }
 };

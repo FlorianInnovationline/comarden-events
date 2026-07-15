@@ -21,6 +21,7 @@ export const site = {
   nav: [
     { href: "/", label: "Accueil" },
     { href: "/#evenements", label: "Événements" },
+    { href: "/shop", label: "Magasin" },
     { href: "/souvenirs", label: "Souvenirs" },
     { href: "/jobs", label: "Jobs" },
     { href: "/#contact", label: "Contact" }
