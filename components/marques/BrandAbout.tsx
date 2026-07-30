@@ -16,6 +16,7 @@ export default function BrandAbout({ brand }: { brand: BrandConfig }) {
   const hasImage = Boolean(brand.aboutImage) && !imgFailed;
   const contain = brand.aboutImageFit === "contain";
   const rounded = brand.aboutImageShape === "rounded";
+  const bare = brand.aboutImageFrame === "bare";
 
   return (
     <section className="bg-[var(--brand-bg)] py-16 sm:py-20 lg:py-24">
@@ -59,11 +60,11 @@ export default function BrandAbout({ brand }: { brand: BrandConfig }) {
 
           {brand.aboutImage && (
             <Reveal delay={120}>
-              <div className="flex justify-center lg:justify-end">
+              <div className="flex justify-center">
                 <div
-                  className={`relative w-full max-w-md overflow-hidden ring-1 ring-black/5 shadow-xl bg-white ${
-                    rounded ? "aspect-[4/3] rounded-3xl" : "aspect-square rounded-full"
-                  }`}
+                  className={`relative w-full overflow-hidden ${
+                    bare ? "max-w-lg" : "max-w-md ring-1 ring-black/5 shadow-xl bg-white"
+                  } ${rounded ? "aspect-[4/3] rounded-3xl" : "aspect-square rounded-full"}`}
                 >
                   {hasImage ? (
                     <Image
@@ -71,6 +72,11 @@ export default function BrandAbout({ brand }: { brand: BrandConfig }) {
                       alt={brand.name}
                       fill
                       className={contain ? "object-contain p-4" : "object-cover"}
+                      style={
+                        brand.aboutImagePosition
+                          ? { objectPosition: brand.aboutImagePosition }
+                          : undefined
+                      }
                       sizes="(max-width: 1024px) 100vw, 40vw"
                       onError={() => setImgFailed(true)}
                     />

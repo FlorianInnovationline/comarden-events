@@ -102,6 +102,13 @@ export interface BrandConfig {
   aboutImageFit?: "cover" | "contain";
   /** Frame shape for the about image. Default "circle". */
   aboutImageShape?: "circle" | "rounded";
+  /**
+   * Frame styling. "panel" (default) draws a white backing card with a ring and
+   * shadow; "bare" shows the image alone, with no backing or border.
+   */
+  aboutImageFrame?: "panel" | "bare";
+  /** CSS object-position for the about image, e.g. "center 40%". */
+  aboutImagePosition?: string;
   features: BrandFeature[];
   productsTitle: string;
   /** Label of the hero / features CTA that jumps to the product section */
@@ -536,8 +543,9 @@ export const BRANDS: Record<string, BrandConfig> = {
     aboutText:
       "Les rénovations de toitures contenant de l'amiante demandent rigueur, anticipation et matériaux adaptés. Pour les couvreurs, ardoisiers et entrepreneurs actifs en Wallonie, à Bruxelles et en province du Luxembourg, Comarden est le partenaire de confiance pour préparer l'après-désamiantage : choix de la nouvelle couverture, isolation, étanchéité, accessoires, façonnage et livraison sur chantier. Notre équipe vous conseille sur les solutions les plus adaptées à vos projets : remplacement de plaques ondulées, rénovation de bâtiments agricoles ou industriels, nouvelles couvertures en ardoises, tuiles, tôles ou panneaux sandwich. Avec Comarden, vous disposez d'un interlocuteur spécialisé, proche du terrain, capable de vous aider à gagner du temps et à sécuriser vos approvisionnements.",
     aboutImage: "/images/marques/danger-amiante/about.jpg",
-    aboutImageShape: "rounded",
-    aboutImageFit: "contain",
+    // Bare circle cropped on the stack of asbestos sheets (centre of the photo).
+    aboutImageFrame: "bare",
+    aboutImagePosition: "50% 45%",
     features: [
       {
         icon: "EyeOff",
