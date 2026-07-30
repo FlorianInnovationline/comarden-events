@@ -14,6 +14,8 @@ import BrandLogo from "./BrandLogo";
 export default function BrandAbout({ brand }: { brand: BrandConfig }) {
   const [imgFailed, setImgFailed] = useState(false);
   const hasImage = Boolean(brand.aboutImage) && !imgFailed;
+  const contain = brand.aboutImageFit === "contain";
+  const rounded = brand.aboutImageShape === "rounded";
 
   return (
     <section className="bg-[var(--brand-bg)] py-16 sm:py-20 lg:py-24">
@@ -58,13 +60,17 @@ export default function BrandAbout({ brand }: { brand: BrandConfig }) {
           {brand.aboutImage && (
             <Reveal delay={120}>
               <div className="flex justify-center lg:justify-end">
-                <div className="relative w-full max-w-md aspect-square rounded-full overflow-hidden ring-1 ring-black/5 shadow-xl bg-white">
+                <div
+                  className={`relative w-full max-w-md overflow-hidden ring-1 ring-black/5 shadow-xl bg-white ${
+                    rounded ? "aspect-[4/3] rounded-3xl" : "aspect-square rounded-full"
+                  }`}
+                >
                   {hasImage ? (
                     <Image
                       src={brand.aboutImage as string}
                       alt={brand.name}
                       fill
-                      className="object-cover"
+                      className={contain ? "object-contain p-4" : "object-cover"}
                       sizes="(max-width: 1024px) 100vw, 40vw"
                       onError={() => setImgFailed(true)}
                     />

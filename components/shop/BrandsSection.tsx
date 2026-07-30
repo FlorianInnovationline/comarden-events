@@ -8,6 +8,15 @@ import Reveal from "@/components/marques/Reveal";
  * "Nos marques" - brand logo strip on /shop. Each card links to the brand's
  * dedicated /marques/<slug> page. Logos fall back to a styled wordmark.
  */
+// Some logos carry a lot of internal whitespace and render small at a uniform
+// size — bump those individually so every logo reads at a comparable weight.
+const LOGO_SIZE: Record<string, string> = {
+  "solid-john": "max-h-16",
+  rockpanel: "max-h-[4.5rem]",
+  "danger-amiante": "max-h-[4.5rem]"
+};
+const DEFAULT_LOGO_SIZE = "max-h-14";
+
 export function BrandsSection() {
   const brands = allBrands();
 
@@ -29,11 +38,11 @@ export function BrandsSection() {
 
         <div className="flex flex-wrap justify-center gap-4 sm:gap-5">
           {brands.map((b, i) => (
-            <div key={b.slug} className="w-[150px] sm:w-[180px]">
+            <div key={b.slug} className="w-[160px] sm:w-[195px]">
               <Reveal delay={i * 60}>
                 <Link href={`/marques/${b.slug}`} className="group block" aria-label={b.name}>
                   <div
-                    className="relative flex h-24 items-center justify-center overflow-hidden rounded-2xl p-4 shadow-soft ring-1 ring-primary/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-glow sm:h-28"
+                    className="relative flex h-28 items-center justify-center overflow-hidden rounded-2xl p-5 shadow-soft ring-1 ring-primary/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-glow sm:h-32"
                     style={{
                       color: b.logoNeedsDark ? b.colors.onPrimary : b.colors.dark,
                       backgroundColor: b.logoNeedsDark ? b.colors.primary : "#ffffff"
@@ -42,7 +51,7 @@ export function BrandsSection() {
                     <BrandLogo
                       name={b.name}
                       logo={b.logo}
-                      imgClassName="max-h-12 w-auto object-contain"
+                      imgClassName={`${LOGO_SIZE[b.slug] ?? DEFAULT_LOGO_SIZE} max-w-full w-auto object-contain`}
                       textClassName="text-base sm:text-lg font-extrabold tracking-tight text-center leading-tight"
                     />
                     <span

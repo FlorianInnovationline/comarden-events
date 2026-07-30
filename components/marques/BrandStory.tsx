@@ -14,6 +14,7 @@ export default function BrandStory({ brand }: { brand: BrandConfig }) {
   const story = brand.story;
   const [imgFailed, setImgFailed] = useState(false);
   if (!story) return null;
+  const contain = story.imageFit === "contain";
 
   return (
     <section className="bg-[var(--brand-bg)] py-16 sm:py-20 lg:py-24">
@@ -27,7 +28,7 @@ export default function BrandStory({ brand }: { brand: BrandConfig }) {
                   src={story.image}
                   alt={story.heading}
                   fill
-                  className="object-cover"
+                  className={contain ? "object-contain p-5 sm:p-8" : "object-cover"}
                   sizes="(max-width: 1024px) 100vw, 50vw"
                   onError={() => setImgFailed(true)}
                 />

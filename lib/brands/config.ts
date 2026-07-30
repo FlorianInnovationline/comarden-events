@@ -38,6 +38,8 @@ export interface BrandStory {
   text: string;
   /** Public image path (left column); null falls back to a branded panel. */
   image: string | null;
+  /** Fit mode for the story image. Default "cover" (fills the frame). */
+  imageFit?: "cover" | "contain";
   points: string[];
 }
 
@@ -96,6 +98,10 @@ export interface BrandConfig {
   aboutText: string;
   /** Optional photo for the "Qui est…" section; null → branded panel */
   aboutImage?: string | null;
+  /** Fit mode for the about image. Default "cover" (fills the frame). */
+  aboutImageFit?: "cover" | "contain";
+  /** Frame shape for the about image. Default "circle". */
+  aboutImageShape?: "circle" | "rounded";
   features: BrandFeature[];
   productsTitle: string;
   /** Label of the hero / features CTA that jumps to the product section */
@@ -282,6 +288,8 @@ export const BRANDS: Record<string, BrandConfig> = {
     slug: "express",
     name: "EXPRESS",
     logo: "/images/logos/express-logo.png",
+    // Red logo on the red hero would be invisible — show it on a white chip.
+    logoNeedsLight: true,
     tagline: "Outillage et solutions professionnelles du couvreur",
     heroPitch:
       "EXPRESS - Le spécialiste français de l'outillage et des solutions techniques pour les professionnels de la toiture et de l'étanchéité.",
@@ -528,6 +536,8 @@ export const BRANDS: Record<string, BrandConfig> = {
     aboutText:
       "Les rénovations de toitures contenant de l'amiante demandent rigueur, anticipation et matériaux adaptés. Pour les couvreurs, ardoisiers et entrepreneurs actifs en Wallonie, à Bruxelles et en province du Luxembourg, Comarden est le partenaire de confiance pour préparer l'après-désamiantage : choix de la nouvelle couverture, isolation, étanchéité, accessoires, façonnage et livraison sur chantier. Notre équipe vous conseille sur les solutions les plus adaptées à vos projets : remplacement de plaques ondulées, rénovation de bâtiments agricoles ou industriels, nouvelles couvertures en ardoises, tuiles, tôles ou panneaux sandwich. Avec Comarden, vous disposez d'un interlocuteur spécialisé, proche du terrain, capable de vous aider à gagner du temps et à sécuriser vos approvisionnements.",
     aboutImage: "/images/marques/danger-amiante/about.jpg",
+    aboutImageShape: "rounded",
+    aboutImageFit: "contain",
     features: [
       {
         icon: "EyeOff",
@@ -559,6 +569,7 @@ export const BRANDS: Record<string, BrandConfig> = {
       text:
         "L'amiante est un matériau extrêmement dangereux lorsqu'il libère des fibres dans l'air. Invisibles à l'œil nu, ces fibres peuvent être inhalées lors des travaux de toiture, de rénovation, de découpe, de perçage, de nettoyage ou de manipulation de plaques en amiante-ciment. Une fois inhalées, elles peuvent rester durablement dans les poumons et provoquer, parfois plusieurs dizaines d'années après l'exposition, des maladies graves comme l'asbestose, le cancer du poumon ou le mésothéliome. Avant toute intervention sur une toiture ancienne, il est indispensable d'identifier les matériaux à risque, de respecter la réglementation amiante en vigueur et d'utiliser les équipements de protection adaptés.",
       image: "/images/marques/danger-amiante/danger.jpg",
+      imageFit: "contain",
       points: [
         "Masque P3",
         "Combinaison jetable, gants et lunettes",
