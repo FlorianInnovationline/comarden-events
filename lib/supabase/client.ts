@@ -24,6 +24,14 @@ export function getSupabaseClient(): SupabaseClient<Database> | null {
       persistSession: false,
       autoRefreshToken: false,
       detectSessionInUrl: false
+    },
+    global: {
+      // Next.js patches global fetch and stores GET responses in its Data
+      // Cache indefinitely. Since we mirror a live shared catalog, that means
+      // deleted/edited products would keep showing until the cache expires.
+      // Force every catalog request to bypass the Data Cache so reads are
+      // always live (the pages are already force-dynamic).
+      fetch: (input, init) => fetch(input, { ...init, cache: "no-store" })
     }
   });
   return cached;
