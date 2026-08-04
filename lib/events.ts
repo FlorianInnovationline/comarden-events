@@ -300,28 +300,29 @@ const eventsData: ComardenEvent[] = [
     partners: [],
     media: []
   },
+  // The SOPREMA event runs on two dates, one per site. Each site is its own
+  // entry so the timeline and the calendar show both days.
   {
-    slug: "evenement-exclusif-soprema-2026",
+    slug: "evenement-exclusif-soprema-bertrix",
     kind: "teaser",
     status: "upcoming",
     title: "Événement exclusif SOPREMA",
-    date: "2026-08-31", // approximate end-of-August
-    dateLabel: "Fin août 2026",
-    dateRevealed: false,
-    location: "Naninne & Bertrix",
+    date: "2026-08-25",
+    dateLabel: "25 août 2026",
+    location: "Comarden - Bertrix",
     teaser:
-      "Une journée 100% dédiée à la gamme SOPREMA, sur nos deux sites. Date complète révélée prochainement.",
+      "Une journée 100% dédiée à la gamme SOPREMA, sur notre site de Bertrix.",
     intro:
-      "Dans quelques jours, nous vous dévoilerons la date d'une journée exceptionnelle organisée sur nos sites de Naninne et de Bertrix. Une journée 100% dédiée à la gamme complète SOPREMA : découverte des produits, formations techniques, conseils d'experts et inspiration pour vos chantiers.",
+      "Une journée exceptionnelle organisée sur notre site de Bertrix, 100% dédiée à la gamme complète SOPREMA : découverte des produits, formations techniques, conseils d'experts et inspiration pour vos chantiers.",
     program: {
       modules: [
         {
-          title: "Visite des deux sites",
-          description: "Naninne et Bertrix en une seule journée"
+          title: "Découverte de la gamme",
+          description: "l'ensemble des solutions SOPREMA sur un seul site"
         },
         {
           title: "Formations & démonstrations",
-          description: "sur l'ensemble de la gamme SOPREMA"
+          description: "mise en œuvre et bonnes pratiques par les experts SOPREMA"
         },
         {
           title: "Échanges avec nos experts",
@@ -329,11 +330,55 @@ const eventsData: ComardenEvent[] = [
         }
       ]
     },
-    callout: "Une surprise de taille… à découvrir très prochainement !",
+    callout: "Une surprise de taille vous attend sur place !",
     contactCta: {
       label: "Recevoir les détails",
       mailto:
-        "mailto:info@comarden.be?subject=Informations%20%C3%A9v%C3%A9nement%20SOPREMA"
+        "mailto:info@comarden.be?subject=Informations%20%C3%A9v%C3%A9nement%20SOPREMA%20Bertrix"
+    },
+    partners: [
+      {
+        name: "SOPREMA",
+        recap:
+          "Référence européenne en étanchéité, isolation, couverture et solutions végétales. Plus d'un siècle d'innovation au service des professionnels de la toiture.",
+        website: "https://www.soprema.be"
+      }
+    ],
+    media: []
+  },
+  {
+    slug: "evenement-exclusif-soprema-naninne",
+    kind: "teaser",
+    status: "upcoming",
+    title: "Événement exclusif SOPREMA",
+    date: "2026-08-27",
+    dateLabel: "27 août 2026",
+    location: "Comarden - Naninne",
+    teaser:
+      "Une journée 100% dédiée à la gamme SOPREMA, sur notre site de Naninne.",
+    intro:
+      "Une journée exceptionnelle organisée sur notre site de Naninne, 100% dédiée à la gamme complète SOPREMA : découverte des produits, formations techniques, conseils d'experts et inspiration pour vos chantiers.",
+    program: {
+      modules: [
+        {
+          title: "Découverte de la gamme",
+          description: "l'ensemble des solutions SOPREMA sur un seul site"
+        },
+        {
+          title: "Formations & démonstrations",
+          description: "mise en œuvre et bonnes pratiques par les experts SOPREMA"
+        },
+        {
+          title: "Échanges avec nos experts",
+          description: "questions, conseils et retours d'expérience"
+        }
+      ]
+    },
+    callout: "Une surprise de taille vous attend sur place !",
+    contactCta: {
+      label: "Recevoir les détails",
+      mailto:
+        "mailto:info@comarden.be?subject=Informations%20%C3%A9v%C3%A9nement%20SOPREMA%20Naninne"
     },
     partners: [
       {

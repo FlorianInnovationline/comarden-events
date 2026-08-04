@@ -4,13 +4,15 @@ import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { X, Briefcase } from "lucide-react";
+import { X, CalendarDays } from "lucide-react";
 
-const SESSION_KEY = "comarden-recrute-popup-seen";
+// Bump this key whenever the popup content changes, so visitors who already
+// dismissed the previous popup still see the new one.
+const SESSION_KEY = "comarden-soprema-aout-popup-seen";
 
-/** Paths on which the popup is suppressed (pointless to show on the jobs pages). */
+/** Paths on which the popup is suppressed (pointless on the SOPREMA pages themselves). */
 function isSuppressedPath(pathname: string): boolean {
-  return pathname === "/jobs" || pathname.startsWith("/jobs/");
+  return pathname.startsWith("/evenements/evenement-exclusif-soprema");
 }
 
 export function WelcomePopup() {
@@ -91,7 +93,7 @@ export function WelcomePopup() {
             {/* Header */}
             <div className="flex items-start justify-between gap-4 px-6 pt-5 pb-0">
               <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-accent">
-                <Briefcase className="h-5 w-5 text-primary" />
+                <CalendarDays className="h-5 w-5 text-primary" />
               </div>
               <button
                 ref={closeBtnRef}
@@ -110,25 +112,25 @@ export function WelcomePopup() {
                 id="popup-title"
                 className="text-xl font-extrabold text-primary sm:text-2xl"
               >
-                Comarden RECRUTE&nbsp;!
+                Un événement SOPREMA exceptionnel&nbsp;!
               </p>
               <p
                 id="popup-desc"
                 className="mt-2 text-sm leading-relaxed text-ink-light"
               >
-                Envie de nous rejoindre ? Vous connaissez quelqu&apos;un de
-                motivé et professionnel ?
+                Notez la date du <strong className="font-bold text-primary">25 août à Bertrix</strong> et du{" "}
+                <strong className="font-bold text-primary">27 août à Naninne</strong>.
               </p>
             </div>
 
             {/* Footer */}
             <div className="flex items-center justify-between gap-3 px-6 py-5">
               <Link
-                href="/jobs"
+                href="/#evenements"
                 onClick={dismiss}
                 className="inline-flex min-h-[44px] items-center justify-center rounded-full bg-primary px-6 py-2.5 text-sm font-bold text-white shadow-sm transition-all hover:bg-primary-light hover:shadow-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
               >
-                Contactez-nous
+                Voir l&apos;événement
               </Link>
               <button
                 type="button"

@@ -29,7 +29,9 @@ const COLLAPSED_COUNT = 2;
 export function EventsShowcase({ events }: EventsShowcaseProps) {
   const reduce = useReducedMotion();
   const sectionRef = useRef<HTMLElement>(null);
-  const [filter, setFilter] = useState<Filter>("past");
+  // Land on the upcoming events: that is what visitors arriving from the nav or
+  // the announcement popup are looking for.
+  const [filter, setFilter] = useState<Filter>("upcoming");
   const [view, setView] = useState<View>("liste");
   const [expanded, setExpanded] = useState(false);
   const [photosEvent, setPhotosEvent] = useState<ComardenEvent | null>(null);

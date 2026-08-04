@@ -194,23 +194,7 @@ function EventItem({
         )}
         <p className="mt-3 text-sm text-ink-light sm:text-base">{event.teaser}</p>
 
-        {event.partners.length > 0 && (
-          <ul
-            className={
-              "mt-4 flex flex-wrap gap-2 " + (flip ? "md:justify-end" : "")
-            }
-          >
-            {event.partners.map((p) => (
-              <li
-                key={p.name}
-                className="inline-flex items-center gap-1.5 rounded-full border border-primary/10 bg-neutral px-2.5 py-1 text-[0.7rem] font-bold uppercase tracking-kicker text-primary"
-              >
-                <PartnerChipLogo name={p.name} />
-                {p.name}
-              </li>
-            ))}
-          </ul>
-        )}
+        <PartnerChips partners={event.partners} flip={flip} />
 
         <div className={"mt-5 flex flex-wrap gap-2 " + (flip ? "md:justify-end" : "")}>
           <Link
@@ -344,6 +328,8 @@ function FormationItem({ event, flip }: { event: ComardenEvent; flip: boolean })
 
         <p className="mt-3 text-sm text-ink-light sm:text-base">{event.teaser}</p>
 
+        <PartnerChips partners={event.partners} flip={flip} />
+
         {modules.length > 0 && (
           <ModuleChips modules={modules} flip={flip} />
         )}
@@ -368,6 +354,30 @@ function FormationItem({ event, flip }: { event: ComardenEvent; flip: boolean })
         </div>
       </div>
     </>
+  );
+}
+
+/** Partner logo chips shown under an event description. */
+function PartnerChips({
+  partners,
+  flip,
+}: {
+  partners: ComardenEvent["partners"];
+  flip: boolean;
+}) {
+  if (partners.length === 0) return null;
+  return (
+    <ul className={"mt-4 flex flex-wrap gap-2 " + (flip ? "md:justify-end" : "")}>
+      {partners.map((p) => (
+        <li
+          key={p.name}
+          className="inline-flex items-center gap-1.5 rounded-full border border-primary/10 bg-neutral px-2.5 py-1 text-[0.7rem] font-bold uppercase tracking-kicker text-primary"
+        >
+          <PartnerChipLogo name={p.name} />
+          {p.name}
+        </li>
+      ))}
+    </ul>
   );
 }
 
@@ -525,6 +535,8 @@ function TeaserItem({
         )}
 
         <p className="mt-3 text-sm text-ink-light sm:text-base">{event.teaser}</p>
+
+        <PartnerChips partners={event.partners} flip={flip} />
 
         {event.callout && (
           <div className="relative mt-4 overflow-hidden rounded-2xl border border-accent/40 bg-accent/10 px-4 py-3">
