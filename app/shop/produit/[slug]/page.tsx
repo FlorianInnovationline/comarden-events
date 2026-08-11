@@ -18,6 +18,7 @@ import { ProductCard } from "@/components/shop/ProductCard";
 import { VariantPriceProvider } from "@/components/shop/VariantPriceContext";
 import { VariantSelector } from "@/components/shop/VariantSelector";
 import { ProductPriceBlock } from "@/components/shop/ProductPriceBlock";
+import { OrderButton } from "@/components/shop/OrderButton";
 import { Button } from "@/components/ui/Button";
 import { site } from "@/lib/site";
 
@@ -50,9 +51,6 @@ export default async function ProductPage({ params }: PageProps) {
         .slice(0, 4)
     : [];
 
-  const devisMailto = `mailto:${site.contact.email}?subject=${encodeURIComponent(
-    `Demande de devis - ${product.title}`
-  )}`;
 
   return (
     <VariantPriceProvider
@@ -151,16 +149,13 @@ export default async function ProductPage({ params }: PageProps) {
 
               {/* CTAs */}
               <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-                <Button
-                  href={devisMailto}
-                  variant="secondary"
-                  size="md"
-                  external
-                  className="w-full justify-center sm:w-auto"
-                >
-                  Demander un devis
-                  <ArrowRight className="h-4 w-4" />
-                </Button>
+                <OrderButton
+                  productId={product.id}
+                  productSlug={product.slug}
+                  productTitle={product.title}
+                  currency={product.currency}
+                  priceCents={price.finalCents}
+                />
                 {product.lien_produit && (
                   <Button
                     href={product.lien_produit}

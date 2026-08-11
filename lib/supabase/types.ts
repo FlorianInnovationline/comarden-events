@@ -2,7 +2,8 @@
 // Supabase `Database` type - shared Comarden catalog, READ-ONLY subset.
 // ----------------------------------------------------------------------------
 // Copied from the main Comarden repo (lib/supabase/types.ts) and trimmed to
-// the two tables this site reads: `categories` and `products`. The column
+// the tables this site touches: `categories`, `products`, `promotions`,
+// plus `orders`/`order_items` which receive order requests (insert only). The column
 // shapes MUST stay identical to the main site's schema - if the main repo
 // regenerates its types, mirror the changes here.
 // ============================================================================
@@ -46,6 +47,64 @@ export interface Database {
           created_at?: string;
           updated_at?: string;
         };
+        Relationships: [];
+      };
+      orders: {
+        Row: {
+          id: string;
+          user_id: string | null;
+          customer_name: string;
+          customer_email: string;
+          customer_phone: string | null;
+          company: string | null;
+          delivery_address: string | null;
+          notes: string | null;
+          status: string;
+          total_cents: number;
+          currency: string;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id?: string | null;
+          customer_name: string;
+          customer_email: string;
+          customer_phone?: string | null;
+          company?: string | null;
+          delivery_address?: string | null;
+          notes?: string | null;
+          status?: string;
+          total_cents: number;
+          currency?: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: { [_ in never]: never };
+        Relationships: [];
+      };
+      order_items: {
+        Row: {
+          id: string;
+          order_id: string;
+          product_id: string | null;
+          product_title: string;
+          qty: number;
+          unit_price_cents: number;
+          line_total_cents: number;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          order_id: string;
+          product_id?: string | null;
+          product_title: string;
+          qty: number;
+          unit_price_cents: number;
+          line_total_cents: number;
+          created_at?: string;
+        };
+        Update: { [_ in never]: never };
         Relationships: [];
       };
       promotions: {
