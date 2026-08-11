@@ -2,11 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PackageOpen } from "lucide-react";
-import {
-  getCategoryBySlug,
-  getProducts,
-  getGlobalDiscountPercent
-} from "@/lib/shop/queries";
+import { getCategoryBySlug, getProducts } from "@/lib/shop/queries";
 import { ProductCard } from "@/components/shop/ProductCard";
 
 export const dynamic = "force-dynamic";
@@ -29,10 +25,7 @@ export default async function CategoryPage({ params }: PageProps) {
   const category = await getCategoryBySlug(params.slug);
   if (!category) notFound();
 
-  const [products, discountPercent] = await Promise.all([
-    getProducts({ categoryId: category.id, active: true }),
-    getGlobalDiscountPercent()
-  ]);
+  const products = await getProducts({ categoryId: category.id, active: true });
 
   return (
     <>
@@ -90,7 +83,7 @@ export default async function CategoryPage({ params }: PageProps) {
                   key={product.id}
                   product={product}
                   index={i}
-                  discountPercent={discountPercent}
+                 
                 />
               ))}
             </div>

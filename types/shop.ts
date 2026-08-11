@@ -27,6 +27,10 @@ export interface Product {
   specs?: string[];
   avantages?: string[];
   variants?: string[];
+  /** Optional price in cents per variant label. Keys match `variants` entries. */
+  variant_prices?: Record<string, number>;
+  /** Discount applied to this product, in whole percent (1-100). 0 = none. */
+  discount_percent?: number;
   lien_produit?: string;
   warning?: string;
   created_at: string;

@@ -9,16 +9,15 @@ import {
   Package,
   Truck
 } from "lucide-react";
-import {
-  getProductBySlug,
-  getProducts,
-  getGlobalDiscountPercent
-} from "@/lib/shop/queries";
+import { getProductBySlug, getProducts } from "@/lib/shop/queries";
 import { formatPrice, getStockStatus, parseSpec } from "@/lib/shop/utils";
-import { priceBreakdown } from "@/lib/shop/globalDiscount";
+import { priceBreakdown } from "@/lib/shop/discount";
+import { buildVariantOptions, hasVariantPricing } from "@/lib/shop/variants";
 import { ProductGallery } from "@/components/shop/ProductGallery";
 import { ProductCard } from "@/components/shop/ProductCard";
-import { PriceTag } from "@/components/shop/PriceTag";
+import { VariantPriceProvider } from "@/components/shop/VariantPriceContext";
+import { VariantSelector } from "@/components/shop/VariantSelector";
+import { ProductPriceBlock } from "@/components/shop/ProductPriceBlock";
 import { Button } from "@/components/ui/Button";
 import { site } from "@/lib/site";
 
@@ -42,8 +41,9 @@ export default async function ProductPage({ params }: PageProps) {
   if (!product) notFound();
 
   const stockStatus = getStockStatus(product.stock);
-  const discountPercent = await getGlobalDiscountPercent();
-  const price = priceBreakdown(product, discountPercent);
+  const price = priceBreakdown(product);
+  const variantOptions = buildVariantOptions(product);
+  const pricedVariants = hasVariantPricing(variantOptions);
   const related = product.category_id
     ? (await getProducts({ categoryId: product.category_id, active: true }))
         .filter((p) => p.id !== product.id)
@@ -55,7 +55,14 @@ export default async function ProductPage({ params }: PageProps) {
   )}`;
 
   return (
-    <>
+    <VariantPriceProvider
+      basePriceCents={product.price_cents}
+      currency={product.currency}
+      discountPercent={product.discount_percent ?? 0}
+     
+      options={variantOptions}
+      pricedVariants={pricedVariants}
+    >
       {/* Breadcrumb band */}
       <section className="bg-primary pb-8 pt-24 text-white sm:pt-28">
         <div className="container">
@@ -130,24 +137,11 @@ export default async function ProductPage({ params }: PageProps) {
                 </div>
               )}
 
-              {/* Price + stock */}
-              <div className="border-y border-primary/10 py-5">
-                <div className="flex flex-wrap items-baseline gap-x-4 gap-y-2">
-                  <PriceTag
-                    product={product}
-                    discountPercent={discountPercent}
-                    size="lg"
-                  />
-                  <span className={`text-sm font-bold ${stockStatus.color}`}>
-                    {stockStatus.label}
-                  </span>
-                </div>
-                {price.discounted && (
-                  <p className="mt-2 text-sm font-bold text-green-700">
-                    Vous économisez {formatPrice(price.savingCents, product.currency)}
-                  </p>
-                )}
-              </div>
+              {/* Price + stock - follows the selected variant */}
+              <ProductPriceBlock
+                stockLabel={stockStatus.label}
+                stockColor={stockStatus.color}
+              />
 
               {product.sku && (
                 <p className="text-sm text-ink-light">
@@ -247,21 +241,9 @@ export default async function ProductPage({ params }: PageProps) {
               </div>
             )}
 
-            {product.variants && product.variants.length > 0 && (
-              <div className="rounded-3xl bg-white p-6 shadow-soft ring-1 ring-primary/5 sm:p-8 lg:col-span-2">
-                <h2 className="text-lg font-extrabold text-primary sm:text-xl">
-                  Variantes disponibles
-                </h2>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {product.variants.map((v) => (
-                    <span
-                      key={v}
-                      className="rounded-full bg-primary/5 px-3.5 py-1.5 text-xs font-semibold text-primary ring-1 ring-primary/10"
-                    >
-                      {v}
-                    </span>
-                  ))}
-                </div>
+            {variantOptions.length > 0 && (
+              <div className="lg:col-span-2">
+                <VariantSelector />
               </div>
             )}
           </div>
@@ -284,13 +266,13 @@ export default async function ProductPage({ params }: PageProps) {
                   key={p.id}
                   product={p}
                   index={i}
-                  discountPercent={discountPercent}
+                 
                 />
               ))}
             </div>
           </div>
         </section>
       )}
-    </>
+    </VariantPriceProvider>
   );
 }

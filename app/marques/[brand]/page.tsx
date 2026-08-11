@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import type { CSSProperties } from "react";
 import { notFound } from "next/navigation";
 import { getBrand } from "@/lib/brands/config";
-import { getProducts, getGlobalDiscountPercent } from "@/lib/shop/queries";
+import { getProducts } from "@/lib/shop/queries";
 import type { Product } from "@/types/shop";
 import BrandHero from "@/components/marques/BrandHero";
 import BrandAbout from "@/components/marques/BrandAbout";
@@ -42,10 +42,7 @@ export default async function BrandPage({ params }: PageProps) {
   const brand = getBrand(params.brand);
   if (!brand) notFound();
 
-  const [products, discountPercent] = await Promise.all([
-    fetchBrandProducts(brand.productBrand),
-    getGlobalDiscountPercent()
-  ]);
+  const products = await fetchBrandProducts(brand.productBrand);
 
   const brandVars = {
     "--brand-primary": brand.colors.primary,
@@ -63,7 +60,7 @@ export default async function BrandPage({ params }: PageProps) {
       <BrandProductCarousel
         brand={brand}
         products={products}
-        discountPercent={discountPercent}
+       
       />
       {brand.origin && <BrandOrigin brand={brand} />}
       {brand.story && <BrandStory brand={brand} />}

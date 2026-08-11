@@ -8,24 +8,18 @@ import type { Product } from "@/types/shop";
 import { getStockStatus } from "@/lib/shop/utils";
 import { usableProductImages } from "@/components/shop/productImages";
 import { PriceTag } from "@/components/shop/PriceTag";
-import { priceBreakdown } from "@/lib/shop/globalDiscount";
+import { priceBreakdown } from "@/lib/shop/discount";
 
 interface ProductCardProps {
   product: Product;
   index?: number;
-  /** Active site-wide discount percentage, 0 when none. */
-  discountPercent?: number;
 }
 
-export function ProductCard({
-  product,
-  index = 0,
-  discountPercent = 0
-}: ProductCardProps) {
+export function ProductCard({ product, index = 0 }: ProductCardProps) {
   const reduce = useReducedMotion();
   const stockStatus = getStockStatus(product.stock);
   const imageUrl = usableProductImages(product.images)[0];
-  const price = priceBreakdown(product, discountPercent);
+  const price = priceBreakdown(product);
 
   return (
     <motion.article
@@ -101,7 +95,7 @@ export function ProductCard({
           )}
 
           <div className="mt-auto flex items-end justify-between gap-3 pt-4">
-            <PriceTag product={product} discountPercent={discountPercent} />
+            <PriceTag product={product} />
             <span className="inline-flex shrink-0 items-center gap-1.5 pb-0.5 text-sm font-bold text-primary transition-colors group-hover:text-primary-light">
               Voir
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />

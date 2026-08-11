@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Package, Phone } from "lucide-react";
 import { usableProductImages } from "@/components/shop/productImages";
-import { priceBreakdown } from "@/lib/shop/globalDiscount";
+import { priceBreakdown } from "@/lib/shop/discount";
 import { PriceTag } from "@/components/shop/PriceTag";
 import { site } from "@/lib/site";
 import Reveal from "@/components/marques/Reveal";
@@ -12,8 +12,6 @@ import Reveal from "@/components/marques/Reveal";
 interface Props {
   brand: BrandConfig;
   products: Product[];
-  /** Active site-wide discount percentage, 0 when none. */
-  discountPercent?: number;
 }
 
 /**
@@ -22,11 +20,7 @@ interface Props {
  *   - 0 matching products    -> "disponibles sur demande" CTA
  *   - >0 products            -> scroll-snap carousel (read-only: no cart)
  */
-export default function BrandProductCarousel({
-  brand,
-  products,
-  discountPercent = 0,
-}: Props) {
+export default function BrandProductCarousel({ brand, products }: Props) {
   return (
     <section id="produits" className="bg-[var(--brand-bg)] py-16 sm:py-20 lg:py-24 scroll-mt-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -55,7 +49,7 @@ export default function BrandProductCarousel({
             <div className="flex gap-5 overflow-x-auto pb-4 snap-x snap-mandatory -mx-4 px-4 sm:mx-0 sm:px-0 [scrollbar-width:thin]">
               {products.map((p) => {
                 const img = usableProductImages(p.images)[0];
-                const price = priceBreakdown(p, discountPercent);
+                const price = priceBreakdown(p);
                 return (
                   <div
                     key={p.id}
@@ -100,7 +94,7 @@ export default function BrandProductCarousel({
                         </p>
                       )}
                       <div className="mt-auto space-y-2 pt-2">
-                        <PriceTag product={p} discountPercent={discountPercent} />
+                        <PriceTag product={p} />
                         <Link
                           href={`/shop/produit/${p.slug}`}
                           className="inline-flex items-center gap-1.5 text-xs font-semibold text-[var(--brand-dark)] group-hover:text-[var(--brand-accent)] transition-colors"

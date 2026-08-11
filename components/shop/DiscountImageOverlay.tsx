@@ -2,7 +2,7 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { formatPrice } from "@/lib/shop/utils";
-import type { PriceBreakdown } from "@/lib/shop/globalDiscount";
+import type { PriceBreakdown } from "@/lib/shop/discount";
 
 interface DiscountImageOverlayProps {
   price: PriceBreakdown;

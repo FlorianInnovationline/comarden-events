@@ -2,13 +2,11 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { formatPrice } from "@/lib/shop/utils";
-import { priceBreakdown } from "@/lib/shop/globalDiscount";
+import { priceBreakdown } from "@/lib/shop/discount";
 import { cn } from "@/lib/utils";
 
 interface PriceTagProps {
-  product: { price_cents: number; currency: string };
-  /** Active site-wide percentage, 0 when none. */
-  discountPercent: number;
+  product: { price_cents: number; currency: string; discount_percent?: number };
   /** "sm" for cards and carousels, "lg" for the product page. */
   size?: "sm" | "lg";
   className?: string;
@@ -19,14 +17,9 @@ interface PriceTagProps {
  * struck through and the discounted price is shown next to it, with a small
  * animated "-X%" pill. Falls back to a plain price when nothing applies.
  */
-export function PriceTag({
-  product,
-  discountPercent,
-  size = "sm",
-  className
-}: PriceTagProps) {
+export function PriceTag({ product, size = "sm", className }: PriceTagProps) {
   const reduce = useReducedMotion();
-  const p = priceBreakdown(product, discountPercent);
+  const p = priceBreakdown(product);
   const large = size === "lg";
 
   if (!p.discounted) {
