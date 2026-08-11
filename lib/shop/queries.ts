@@ -13,6 +13,7 @@ import "server-only";
 import { getSupabaseClient } from "@/lib/supabase/client";
 import type { Database } from "@/lib/supabase/types";
 import type { Category, Product } from "@/types/shop";
+import { GLOBAL_DISCOUNT_CODE, isValidPercent } from "@/lib/shop/globalDiscount";
 
 type CategoryRow = Database["public"]["Tables"]["categories"]["Row"];
 type ProductRow = Database["public"]["Tables"]["products"]["Row"];
@@ -178,4 +179,39 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
     return null;
   }
   return data ? mapProduct(data as ProductRowWithCategory) : null;
+}
+
+// ===========================================================================
+// Site-wide discount
+// ===========================================================================
+
+/**
+ * Returns the active site-wide discount percentage, or 0 when none is set.
+ *
+ * The value is managed from the admin panel on the main Comarden site and read
+ * here through the shared `promotions` table (public RLS allows reading active
+ * rows). Requests bypass the Next.js Data Cache, so switching the discount on
+ * or off is reflected on the next page load.
+ */
+export async function getGlobalDiscountPercent(): Promise<number> {
+  const sb = getSupabaseClient();
+  if (!sb) {
+    warnNotConfigured("getGlobalDiscountPercent");
+    return 0;
+  }
+
+  const { data, error } = await sb
+    .from("promotions")
+    .select("discount_value, discount_type, active")
+    .eq("code", GLOBAL_DISCOUNT_CODE)
+    .eq("active", true)
+    .maybeSingle();
+
+  if (error) {
+    console.error("[shop] getGlobalDiscountPercent error:", error.message);
+    return 0;
+  }
+  if (!data || data.discount_type !== "percent") return 0;
+
+  return isValidPercent(data.discount_value) ? data.discount_value : 0;
 }

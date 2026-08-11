@@ -9,10 +9,16 @@ import {
   Package,
   Truck
 } from "lucide-react";
-import { getProductBySlug, getProducts } from "@/lib/shop/queries";
+import {
+  getProductBySlug,
+  getProducts,
+  getGlobalDiscountPercent
+} from "@/lib/shop/queries";
 import { formatPrice, getStockStatus, parseSpec } from "@/lib/shop/utils";
+import { priceBreakdown } from "@/lib/shop/globalDiscount";
 import { ProductGallery } from "@/components/shop/ProductGallery";
 import { ProductCard } from "@/components/shop/ProductCard";
+import { PriceTag } from "@/components/shop/PriceTag";
 import { Button } from "@/components/ui/Button";
 import { site } from "@/lib/site";
 
@@ -36,6 +42,8 @@ export default async function ProductPage({ params }: PageProps) {
   if (!product) notFound();
 
   const stockStatus = getStockStatus(product.stock);
+  const discountPercent = await getGlobalDiscountPercent();
+  const price = priceBreakdown(product, discountPercent);
   const related = product.category_id
     ? (await getProducts({ categoryId: product.category_id, active: true }))
         .filter((p) => p.id !== product.id)
@@ -80,7 +88,12 @@ export default async function ProductPage({ params }: PageProps) {
       <section className="bg-white py-12 sm:py-16">
         <div className="container">
           <div className="grid gap-10 lg:grid-cols-2 lg:gap-14">
-            <ProductGallery images={product.images} alt={product.title} />
+            <ProductGallery
+              images={product.images}
+              alt={product.title}
+              price={price}
+              currency={product.currency}
+            />
 
             <div className="flex flex-col gap-5">
               <div>
@@ -118,13 +131,22 @@ export default async function ProductPage({ params }: PageProps) {
               )}
 
               {/* Price + stock */}
-              <div className="flex flex-wrap items-baseline gap-4 border-y border-primary/10 py-5">
-                <span className="text-3xl font-extrabold text-primary sm:text-4xl">
-                  {formatPrice(product.price_cents, product.currency)}
-                </span>
-                <span className={`text-sm font-bold ${stockStatus.color}`}>
-                  {stockStatus.label}
-                </span>
+              <div className="border-y border-primary/10 py-5">
+                <div className="flex flex-wrap items-baseline gap-x-4 gap-y-2">
+                  <PriceTag
+                    product={product}
+                    discountPercent={discountPercent}
+                    size="lg"
+                  />
+                  <span className={`text-sm font-bold ${stockStatus.color}`}>
+                    {stockStatus.label}
+                  </span>
+                </div>
+                {price.discounted && (
+                  <p className="mt-2 text-sm font-bold text-green-700">
+                    Vous économisez {formatPrice(price.savingCents, product.currency)}
+                  </p>
+                )}
               </div>
 
               {product.sku && (
@@ -258,7 +280,12 @@ export default async function ProductPage({ params }: PageProps) {
             </div>
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
               {related.map((p, i) => (
-                <ProductCard key={p.id} product={p} index={i} />
+                <ProductCard
+                  key={p.id}
+                  product={p}
+                  index={i}
+                  discountPercent={discountPercent}
+                />
               ))}
             </div>
           </div>

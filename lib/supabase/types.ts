@@ -48,6 +48,48 @@ export interface Database {
         };
         Relationships: [];
       };
+      promotions: {
+        Row: {
+          id: string;
+          title: string;
+          code: string | null;
+          description: string | null;
+          discount_type: "percent" | "fixed";
+          discount_value: number;
+          starts_at: string | null;
+          ends_at: string | null;
+          active: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          title: string;
+          code?: string | null;
+          description?: string | null;
+          discount_type: "percent" | "fixed";
+          discount_value: number;
+          starts_at?: string | null;
+          ends_at?: string | null;
+          active?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          title?: string;
+          code?: string | null;
+          description?: string | null;
+          discount_type?: "percent" | "fixed";
+          discount_value?: number;
+          starts_at?: string | null;
+          ends_at?: string | null;
+          active?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
       products: {
         Row: {
           id: string;

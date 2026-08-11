@@ -9,6 +9,8 @@ import { cn } from "@/lib/utils";
 
 interface ShopCatalogProps {
   products: Product[];
+  /** Active site-wide discount percentage, 0 when none. */
+  discountPercent?: number;
 }
 
 /** Nicely-cased label for a raw products.brand value (e.g. "MG BOUW" -> "MG Bouw"). */
@@ -28,7 +30,7 @@ function brandLabel(raw: string): string {
  * list. All filtering happens in the browser, so it stays snappy with no extra
  * requests. The product data itself is fetched live server-side.
  */
-export function ShopCatalog({ products }: ShopCatalogProps) {
+export function ShopCatalog({ products, discountPercent = 0 }: ShopCatalogProps) {
   const [query, setQuery] = useState("");
   const [brand, setBrand] = useState<string>("all");
 
@@ -140,7 +142,12 @@ export function ShopCatalog({ products }: ShopCatalogProps) {
       ) : (
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {filtered.map((product, i) => (
-            <ProductCard key={product.id} product={product} index={i} />
+            <ProductCard
+              key={product.id}
+              product={product}
+              index={i}
+              discountPercent={discountPercent}
+            />
           ))}
         </div>
       )}

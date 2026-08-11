@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { getProducts } from "@/lib/shop/queries";
+import { getProducts, getGlobalDiscountPercent } from "@/lib/shop/queries";
 import { BrandsSection } from "@/components/shop/BrandsSection";
 import { ShopCatalog } from "@/components/shop/ShopCatalog";
 import { SectionTitle } from "@/components/ui/SectionTitle";
@@ -15,7 +15,10 @@ export const metadata: Metadata = {
 };
 
 export default async function ShopPage() {
-  const products = await getProducts({ active: true });
+  const [products, discountPercent] = await Promise.all([
+    getProducts({ active: true }),
+    getGlobalDiscountPercent()
+  ]);
 
   return (
     <>
@@ -51,7 +54,7 @@ export default async function ShopPage() {
             align="center"
             className="mb-10 sm:mb-12"
           />
-          <ShopCatalog products={products} />
+          <ShopCatalog products={products} discountPercent={discountPercent} />
         </div>
       </section>
     </>

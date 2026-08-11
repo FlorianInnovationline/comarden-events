@@ -5,18 +5,27 @@ import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import { Package, ArrowRight } from "lucide-react";
 import type { Product } from "@/types/shop";
-import { formatPrice, getStockStatus } from "@/lib/shop/utils";
+import { getStockStatus } from "@/lib/shop/utils";
 import { usableProductImages } from "@/components/shop/productImages";
+import { PriceTag } from "@/components/shop/PriceTag";
+import { priceBreakdown } from "@/lib/shop/globalDiscount";
 
 interface ProductCardProps {
   product: Product;
   index?: number;
+  /** Active site-wide discount percentage, 0 when none. */
+  discountPercent?: number;
 }
 
-export function ProductCard({ product, index = 0 }: ProductCardProps) {
+export function ProductCard({
+  product,
+  index = 0,
+  discountPercent = 0
+}: ProductCardProps) {
   const reduce = useReducedMotion();
   const stockStatus = getStockStatus(product.stock);
   const imageUrl = usableProductImages(product.images)[0];
+  const price = priceBreakdown(product, discountPercent);
 
   return (
     <motion.article
@@ -60,6 +69,19 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
           >
             {stockStatus.label}
           </span>
+
+          {/* Discount flag */}
+          {price.discounted && (
+            <motion.span
+              initial={reduce ? false : { opacity: 0, scale: 0.6 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ type: "spring", stiffness: 420, damping: 18, delay: 0.1 }}
+              className="absolute left-3 top-3 rounded-full bg-red-600 px-2.5 py-1 text-[0.65rem] font-extrabold text-white shadow-sm"
+            >
+              -{price.percent}%
+            </motion.span>
+          )}
         </div>
 
         {/* Content */}
@@ -78,11 +100,9 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
             </p>
           )}
 
-          <div className="mt-auto flex items-center justify-between pt-4">
-            <span className="text-lg font-extrabold text-primary">
-              {formatPrice(product.price_cents, product.currency)}
-            </span>
-            <span className="inline-flex items-center gap-1.5 text-sm font-bold text-primary transition-colors group-hover:text-primary-light">
+          <div className="mt-auto flex items-end justify-between gap-3 pt-4">
+            <PriceTag product={product} discountPercent={discountPercent} />
+            <span className="inline-flex shrink-0 items-center gap-1.5 pb-0.5 text-sm font-bold text-primary transition-colors group-hover:text-primary-light">
               Voir
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
             </span>

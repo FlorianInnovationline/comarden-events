@@ -2,7 +2,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PackageOpen } from "lucide-react";
-import { getCategoryBySlug, getProducts } from "@/lib/shop/queries";
+import {
+  getCategoryBySlug,
+  getProducts,
+  getGlobalDiscountPercent
+} from "@/lib/shop/queries";
 import { ProductCard } from "@/components/shop/ProductCard";
 
 export const dynamic = "force-dynamic";
@@ -25,7 +29,10 @@ export default async function CategoryPage({ params }: PageProps) {
   const category = await getCategoryBySlug(params.slug);
   if (!category) notFound();
 
-  const products = await getProducts({ categoryId: category.id, active: true });
+  const [products, discountPercent] = await Promise.all([
+    getProducts({ categoryId: category.id, active: true }),
+    getGlobalDiscountPercent()
+  ]);
 
   return (
     <>
@@ -79,7 +86,12 @@ export default async function CategoryPage({ params }: PageProps) {
           ) : (
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {products.map((product, i) => (
-                <ProductCard key={product.id} product={product} index={i} />
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  index={i}
+                  discountPercent={discountPercent}
+                />
               ))}
             </div>
           )}
