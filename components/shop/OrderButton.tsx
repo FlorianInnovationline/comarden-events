@@ -27,6 +27,7 @@ export function OrderButton({
       <button
         type="button"
         onClick={() => setOpen(true)}
+        data-track="commander"
         className="group inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-bold tracking-tight text-primary shadow-sm transition-all duration-200 hover:bg-accent-light hover:shadow-glow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 sm:w-auto sm:text-base"
       >
         Commander

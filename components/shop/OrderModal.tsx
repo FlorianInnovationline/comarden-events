@@ -362,6 +362,7 @@ export function OrderModal({
                   <button
                     type="submit"
                     disabled={sending}
+                    data-track="commande-envoyee"
                     className="mt-6 inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-full bg-accent px-7 py-3 text-sm font-bold text-primary shadow-sm transition hover:bg-accent-light hover:shadow-glow disabled:cursor-not-allowed disabled:opacity-60"
                   >
                     {sending ? (

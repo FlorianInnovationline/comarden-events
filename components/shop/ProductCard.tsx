@@ -38,6 +38,7 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
         href={`/shop/produit/${product.slug}`}
         className="flex h-full flex-col focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accent"
         aria-label={`Voir le produit : ${product.title}`}
+        data-track={`produit:${product.slug}`}
       >
         {/* Image */}
         <div className="relative aspect-square overflow-hidden bg-neutral">

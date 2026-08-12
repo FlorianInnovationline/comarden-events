@@ -40,7 +40,12 @@ export function BrandsSection() {
           {brands.map((b, i) => (
             <div key={b.slug} className="w-[160px] sm:w-[195px]">
               <Reveal delay={i * 60}>
-                <Link href={`/marques/${b.slug}`} className="group block" aria-label={b.name}>
+                <Link
+                  href={`/marques/${b.slug}`}
+                  className="group block"
+                  aria-label={b.name}
+                  data-track={`marque:${b.slug}`}
+                >
                   <div
                     className="relative flex h-28 items-center justify-center overflow-hidden rounded-2xl p-5 shadow-soft ring-1 ring-primary/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-glow sm:h-32"
                     style={{

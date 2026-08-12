@@ -35,6 +35,7 @@ export function CategoryCard({ category, productCount, index = 0 }: CategoryCard
         href={`/shop/categorie/${category.slug}`}
         className="flex h-full flex-col focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accent"
         aria-label={`Voir la catégorie : ${category.name}`}
+        data-track={`categorie:${category.slug}`}
       >
         <div className="relative h-40 overflow-hidden bg-primary sm:h-44">
           {hasRemoteImage ? (

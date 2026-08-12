@@ -49,6 +49,34 @@ export interface Database {
         };
         Relationships: [];
       };
+      site_events: {
+        Row: {
+          id: number;
+          site: string;
+          type: string;
+          path: string;
+          label: string | null;
+          referrer_host: string | null;
+          device: string | null;
+          visitor_hash: string | null;
+          session_id: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: number;
+          site?: string;
+          type: string;
+          path: string;
+          label?: string | null;
+          referrer_host?: string | null;
+          device?: string | null;
+          visitor_hash?: string | null;
+          session_id?: string | null;
+          created_at?: string;
+        };
+        Update: { [_ in never]: never };
+        Relationships: [];
+      };
       orders: {
         Row: {
           id: string;

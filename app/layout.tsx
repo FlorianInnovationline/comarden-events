@@ -5,6 +5,9 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { ScrollProgress } from "@/components/layout/ScrollProgress";
 import { WelcomePopup } from "@/components/ui/WelcomePopup";
+import { Analytics } from "@vercel/analytics/next";
+import { SiteAnalytics } from "@/components/analytics/SiteAnalytics";
+import { Suspense } from "react";
 import { site } from "@/lib/site";
 
 const inter = Inter({
@@ -59,6 +62,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main id="contenu">{children}</main>
         <Footer />
         <WelcomePopup />
+        {/* Baseline traffic (Vercel) + first-party cookieless stats. */}
+        <Analytics />
+        <Suspense fallback={null}>
+          <SiteAnalytics />
+        </Suspense>
       </body>
     </html>
   );
