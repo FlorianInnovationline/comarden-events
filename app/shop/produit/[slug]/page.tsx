@@ -13,6 +13,8 @@ import { getProductBySlug, getProducts } from "@/lib/shop/queries";
 import { formatPrice, getStockStatus, parseSpec } from "@/lib/shop/utils";
 import { priceBreakdown } from "@/lib/shop/discount";
 import { buildVariantOptions, hasVariantPricing } from "@/lib/shop/variants";
+import { offerForDiscounted, offerForRequired } from "@/lib/shop/bundles";
+import { BundleOfferCard } from "@/components/shop/BundleOfferCard";
 import { ProductGallery } from "@/components/shop/ProductGallery";
 import { ProductCard } from "@/components/shop/ProductCard";
 import { VariantPriceProvider } from "@/components/shop/VariantPriceContext";
@@ -45,6 +47,17 @@ export default async function ProductPage({ params }: PageProps) {
   const price = priceBreakdown(product);
   const variantOptions = buildVariantOptions(product);
   const pricedVariants = hasVariantPricing(variantOptions);
+  // Conditional bundle: this product either unlocks a discount on another, or
+  // gets one when another is bought alongside.
+  const unlockOffer = offerForDiscounted(product.slug);
+  const rewardOffer = offerForRequired(product.slug);
+  const bundleOffer = unlockOffer ?? rewardOffer;
+  const bundlePartner = bundleOffer
+    ? await getProductBySlug(
+        unlockOffer ? bundleOffer.requiredSlug : bundleOffer.discountedSlug
+      )
+    : null;
+
   const related = product.category_id
     ? (await getProducts({ categoryId: product.category_id, active: true }))
         .filter((p) => p.id !== product.id)
@@ -191,6 +204,25 @@ export default async function ProductPage({ params }: PageProps) {
           </div>
         </div>
       </section>
+
+      {/* Conditional bundle offer */}
+      {bundleOffer && bundlePartner && (
+        <section className="bg-white pb-12 sm:pb-16">
+          <div className="container">
+            <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-xl">
+              <BundleOfferCard
+                partner={bundlePartner}
+                percent={bundleOffer.percent}
+                mode={unlockOffer ? "unlock" : "reward"}
+                discountedPriceCents={
+                  unlockOffer ? product.price_cents : bundlePartner.price_cents
+                }
+                currency={product.currency}
+              />
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Specs / avantages / variantes */}
       {((product.specs?.length ?? 0) > 0 ||

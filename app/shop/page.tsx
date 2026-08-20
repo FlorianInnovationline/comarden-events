@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getProducts } from "@/lib/shop/queries";
 import { BrandsSection } from "@/components/shop/BrandsSection";
+import { PromoValidity } from "@/components/shop/PromoValidity";
 import { ShopCatalog } from "@/components/shop/ShopCatalog";
 import { SectionTitle } from "@/components/ui/SectionTitle";
 
@@ -37,6 +38,9 @@ export default async function ShopPage() {
           </p>
         </div>
       </section>
+
+      {/* Validity window for the current conditions */}
+      <PromoValidity />
 
       {/* Brands */}
       <BrandsSection />
