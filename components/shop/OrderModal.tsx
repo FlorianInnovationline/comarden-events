@@ -25,6 +25,14 @@ interface OrderModalProps {
   currency: string;
   /** Fallback price when the page has no variant context. */
   fallbackPriceCents: number;
+  /**
+   * Bundle mode: order several products together at the offer price. When set,
+   * these lines replace the single-product order entirely.
+   */
+  bundle?: {
+    percent: number;
+    lines: { id: string; title: string; unitPriceCents: number }[];
+  };
 }
 
 /**
@@ -39,6 +47,7 @@ export function OrderModal({
   productTitle,
   currency,
   fallbackPriceCents,
+  bundle,
 }: OrderModalProps) {
   const reduce = useReducedMotion();
   const ctx = useVariantPrice();
@@ -55,6 +64,10 @@ export function OrderModal({
       ? ctx.options[ctx.selectedIndex]?.label
       : undefined;
   const unitPriceCents = ctx ? ctx.price.finalCents : fallbackPriceCents;
+  // In bundle mode the "unit" is the whole pack.
+  const packPriceCents = bundle
+    ? bundle.lines.reduce((sum, l) => sum + l.unitPriceCents, 0)
+    : unitPriceCents;
 
   useEffect(() => setMounted(true), []);
 
@@ -95,10 +108,18 @@ export function OrderModal({
           productId,
           productSlug,
           productTitle,
-          variant: selectedVariant,
+          variant: bundle ? undefined : selectedVariant,
           quantity,
-          unitPriceCents,
+          unitPriceCents: packPriceCents,
           currency,
+          ...(bundle && {
+            bundlePercent: bundle.percent,
+            items: bundle.lines.map((l) => ({
+              productId: l.id,
+              title: l.title,
+              unitPriceCents: l.unitPriceCents,
+            })),
+          }),
           name: fd.get("name"),
           company: fd.get("company"),
           email: fd.get("email"),
@@ -192,17 +213,25 @@ export function OrderModal({
                 <form onSubmit={submit} className="p-6 sm:p-8">
                   <div className="mb-5 flex items-start justify-between gap-4">
                     <div className="min-w-0">
-                      <span className="kicker text-accent-dark">Commander</span>
+                      <span className="kicker text-accent-dark">
+                        {bundle ? "Commander l'offre" : "Commander"}
+                      </span>
                       <h2
                         id="order-title"
                         className="mt-1 text-xl font-extrabold leading-snug text-primary sm:text-2xl"
                       >
                         {productTitle}
                       </h2>
-                      {selectedVariant && (
-                        <p className="mt-1.5 text-sm text-ink-light">
-                          {selectedVariant}
+                      {bundle ? (
+                        <p className="mt-1.5 text-sm font-semibold text-accent-dark">
+                          Offre combinée -{bundle.percent}%
                         </p>
+                      ) : (
+                        selectedVariant && (
+                          <p className="mt-1.5 text-sm text-ink-light">
+                            {selectedVariant}
+                          </p>
+                        )
                       )}
                     </div>
                     <button
@@ -214,6 +243,23 @@ export function OrderModal({
                       <X className="h-5 w-5" />
                     </button>
                   </div>
+
+                  {/* Bundle contents */}
+                  {bundle && (
+                    <ul className="mb-4 space-y-1.5 rounded-2xl bg-neutral p-4">
+                      {bundle.lines.map((l) => (
+                        <li
+                          key={l.id || l.title}
+                          className="flex items-start justify-between gap-3 text-sm"
+                        >
+                          <span className="min-w-0 flex-1 text-primary">{l.title}</span>
+                          <span className="shrink-0 font-bold text-primary">
+                            {formatPrice(l.unitPriceCents, currency)}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
 
                   {/* Quantity + running total */}
                   <div className="mb-6 flex items-center justify-between gap-4 rounded-2xl bg-neutral p-4">
@@ -246,13 +292,13 @@ export function OrderModal({
                       </div>
                     </div>
                     <div className="text-right">
-                      {unitPriceCents > 0 ? (
+                      {packPriceCents > 0 ? (
                         <>
                           <span className="block text-[0.6rem] font-bold uppercase tracking-kicker text-ink-light/60">
                             Total indicatif
                           </span>
                           <span className="text-lg font-extrabold text-primary">
-                            {formatPrice(unitPriceCents * quantity, currency)}
+                            {formatPrice(packPriceCents * quantity, currency)}
                           </span>
                         </>
                       ) : (

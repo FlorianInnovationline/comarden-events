@@ -1,15 +1,19 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowRight, Gift, Package, Plus } from "lucide-react";
+import { ArrowRight, Gift, Package, Plus, ShoppingCart } from "lucide-react";
 import type { Product } from "@/types/shop";
 import { formatPrice } from "@/lib/shop/utils";
 import { usableProductImages } from "@/components/shop/productImages";
 import { bundlePriceCents } from "@/lib/shop/bundles";
+import { OrderModal } from "@/components/shop/OrderModal";
 
 interface BundleOfferCardProps {
+  /** The product whose page this card sits on. */
+  self: { id: string; slug: string; title: string; price_cents: number };
   /** The other product in the bundle, shown in the card. */
   partner: Product;
   percent: number;
@@ -30,6 +34,7 @@ interface BundleOfferCardProps {
  * pair so the condition is always stated explicitly.
  */
 export function BundleOfferCard({
+  self,
   partner,
   percent,
   mode,
@@ -37,6 +42,7 @@ export function BundleOfferCard({
   currency,
 }: BundleOfferCardProps) {
   const reduce = useReducedMotion();
+  const [open, setOpen] = useState(false);
   const image = usableProductImages(partner.images)[0];
   const finalCents = bundlePriceCents(discountedPriceCents, percent);
   const saving = discountedPriceCents - finalCents;
@@ -53,6 +59,20 @@ export function BundleOfferCard({
 
   const priceLabel =
     mode === "unlock" ? "Ce produit vous revient à" : `${partner.title} vous revient à`;
+
+  // The pack always lists the required product at full price and the discounted
+  // one at the offer price, whichever page the card is shown on.
+  const lines =
+    mode === "unlock"
+      ? [
+          { id: partner.id, title: partner.title, unitPriceCents: partner.price_cents },
+          { id: self.id, title: self.title, unitPriceCents: finalCents },
+        ]
+      : [
+          { id: self.id, title: self.title, unitPriceCents: self.price_cents },
+          { id: partner.id, title: partner.title, unitPriceCents: finalCents },
+        ];
+  const packTotal = lines.reduce((sum, l) => sum + l.unitPriceCents, 0);
 
   return (
     <motion.div
@@ -136,11 +156,34 @@ export function BundleOfferCard({
           </div>
         </div>
 
-        <p className="mt-3 text-xs leading-relaxed text-ink-light/70">
-          Économie de {formatPrice(saving, currency)}. Indiquez les deux produits dans
-          votre commande pour en bénéficier.
+        {/* Order the pair directly, discount already applied */}
+        <button
+          type="button"
+          onClick={() => setOpen(true)}
+          data-track={`bundle-commander:${partner.slug}`}
+          className="group mt-5 inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-bold text-primary shadow-sm transition-all duration-200 hover:bg-accent-light hover:shadow-glow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 sm:text-base"
+        >
+          <ShoppingCart className="h-4 w-4" />
+          Commander les deux - {formatPrice(packTotal, currency)}
+          <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+        </button>
+
+        <p className="mt-3 text-center text-xs leading-relaxed text-ink-light/70">
+          Économie de {formatPrice(saving, currency)}. La remise est déjà appliquée dans
+          cette commande.
         </p>
       </div>
+
+      <OrderModal
+        open={open}
+        onClose={() => setOpen(false)}
+        productId={self.id}
+        productSlug={self.slug}
+        productTitle={`Offre ${lines.map((l) => l.title).join(" + ")}`}
+        currency={currency}
+        fallbackPriceCents={packTotal}
+        bundle={{ percent, lines }}
+      />
     </motion.div>
   );
 }

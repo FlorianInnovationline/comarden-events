@@ -211,6 +211,12 @@ export default async function ProductPage({ params }: PageProps) {
           <div className="container">
             <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-xl">
               <BundleOfferCard
+                self={{
+                  id: product.id,
+                  slug: product.slug,
+                  title: product.title,
+                  price_cents: product.price_cents,
+                }}
                 partner={bundlePartner}
                 percent={bundleOffer.percent}
                 mode={unlockOffer ? "unlock" : "reward"}

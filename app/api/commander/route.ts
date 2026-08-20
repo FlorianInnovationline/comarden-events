@@ -19,6 +19,10 @@ interface OrderPayload {
   phone?: string;
   address?: string;
   notes?: string;
+  /** Optional multi-product order (bundle offer). Takes precedence when set. */
+  items?: { productId?: string; title?: string; unitPriceCents?: number }[];
+  /** Percentage granted by the bundle, for the notification only. */
+  bundlePercent?: number;
 }
 
 const MAX = 2000;
@@ -92,7 +96,36 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const lineTotal = unitPriceCents * quantity;
+  // A bundle order carries several products; a normal order carries exactly one.
+  const rawItems = Array.isArray(body.items) ? body.items.slice(0, 10) : [];
+  const bundleLines = rawItems
+    .map((it) => ({
+      productId: clean(it.productId) || null,
+      title: clean(it.title),
+      unitPriceCents:
+        Number.isFinite(Number(it.unitPriceCents)) && Number(it.unitPriceCents) >= 0
+          ? Math.round(Number(it.unitPriceCents))
+          : 0,
+    }))
+    .filter((it) => it.title);
+
+  const lines =
+    bundleLines.length > 0
+      ? bundleLines.map((it) => ({ ...it, qty: quantity }))
+      : [
+          {
+            productId: clean(body.productId) || null,
+            title: variant ? `${productTitle} (${variant})` : productTitle,
+            unitPriceCents,
+            qty: quantity,
+          },
+        ];
+
+  const lineTotal = lines.reduce((sum, l) => sum + l.unitPriceCents * l.qty, 0);
+  const bundlePercent =
+    Number.isFinite(Number(body.bundlePercent)) && Number(body.bundlePercent) > 0
+      ? Math.round(Number(body.bundlePercent))
+      : 0;
 
   // ---- 1. Persist the request so it is never lost -------------------------
   let orderId: string | null = null;
@@ -118,14 +151,16 @@ export async function POST(request: NextRequest) {
       console.error("[commander] order insert error:", error.message);
     } else {
       orderId = data.id;
-      const { error: itemErr } = await sb.from("order_items").insert({
-        order_id: data.id,
-        product_id: clean(body.productId) || null,
-        product_title: variant ? `${productTitle} (${variant})` : productTitle,
-        qty: quantity,
-        unit_price_cents: unitPriceCents,
-        line_total_cents: lineTotal,
-      });
+      const { error: itemErr } = await sb.from("order_items").insert(
+        lines.map((l) => ({
+          order_id: data.id,
+          product_id: l.productId,
+          product_title: l.title,
+          qty: l.qty,
+          unit_price_cents: l.unitPriceCents,
+          line_total_cents: l.unitPriceCents * l.qty,
+        }))
+      );
       if (itemErr) console.error("[commander] order item error:", itemErr.message);
     }
   }
@@ -135,15 +170,26 @@ export async function POST(request: NextRequest) {
   let emailed = false;
 
   if (apiKey) {
+    const isBundle = bundleLines.length > 0;
+    const productRows: [string, string][] = isBundle
+      ? lines.map((l, i) => [
+          `Produit ${i + 1}`,
+          `${l.title} - ${l.qty} x ${euro(l.unitPriceCents, currency)}`,
+        ])
+      : [
+          ["Produit", productTitle],
+          ...(variant ? ([["Variante", variant]] as [string, string][]) : []),
+          ["Quantité", String(quantity)],
+        ];
+
     const rows: [string, string][] = [
-      ["Produit", productTitle],
-      ...(variant ? ([["Variante", variant]] as [string, string][]) : []),
-      ["Quantité", String(quantity)],
-      ...(unitPriceCents > 0
-        ? ([
-            ["Prix unitaire", euro(unitPriceCents, currency)],
-            ["Total indicatif", euro(lineTotal, currency)],
-          ] as [string, string][])
+      ...(isBundle
+        ? ([["Type", `Offre combinée -${bundlePercent}%`]] as [string, string][])
+        : []),
+      ...productRows,
+      ...(isBundle ? ([["Quantité", String(quantity)]] as [string, string][]) : []),
+      ...(lineTotal > 0
+        ? ([["Total indicatif", euro(lineTotal, currency)]] as [string, string][])
         : ([["Prix", "Sur devis"]] as [string, string][])),
       ["Nom", name],
       ...(company ? ([["Société", company]] as [string, string][]) : []),
@@ -191,7 +237,9 @@ export async function POST(request: NextRequest) {
         // message the visible recipient receives, nor anywhere in the client.
         bcc: [ORDER_BCC],
         replyTo: email,
-        subject: `Commande - ${productTitle}${variant ? ` (${variant})` : ""}`,
+        subject: isBundle
+          ? `Commande combinée -${bundlePercent}% - ${lines.map((l) => l.title).join(" + ")}`
+          : `Commande - ${productTitle}${variant ? ` (${variant})` : ""}`,
         html,
         text,
       });
